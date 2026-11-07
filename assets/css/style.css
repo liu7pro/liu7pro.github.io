@@ -201,8 +201,8 @@ body {
   box-shadow: 0 22px 60px -28px rgba(0, 0, 0, 0.9),
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
     inset 0 -1px 0 rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(16px) saturate(170%);
-  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(var(--glass-blur, 20px)) saturate(165%);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 20px)) saturate(165%);
   isolation: isolate;
 }
 
@@ -343,6 +343,7 @@ section[id],
   gap: 26px;
   padding: 5px 8px;
   border-radius: 14px;
+  --glass-blur: 16px;
   transition: box-shadow 0.35s var(--ease);
 }
 
@@ -538,7 +539,9 @@ section[id],
   place-items: center;
   border-radius: 50%;
   overflow: hidden;
-  animation: float 7s ease-in-out infinite;
+  --glass-blur: 20px;
+  animation: rise 0.8s var(--ease) 0.28s both,
+    float 7s ease-in-out 1.2s infinite;
 }
 
 .hero-icon img {
@@ -610,6 +613,7 @@ body::before {
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 18px;
+  animation: rise 0.7s var(--ease) 0.3s both;
 }
 
 .hero-badges span {
@@ -634,8 +638,8 @@ body::before {
   color: transparent;
   -webkit-text-fill-color: transparent;
   background-size: 100% 220%;
-  animation: rise 0.7s var(--ease) both,
-    titleSheen 9s 1s ease-in-out infinite;
+  animation: rise 0.7s var(--ease) 0.34s both,
+    titleSheen 9s 1.4s ease-in-out infinite;
 }
 
 [data-theme="light"] .hero h1 {
@@ -658,7 +662,7 @@ body::before {
   font-size: clamp(15px, 1.5vw, 17px);
   color: var(--muted);
   text-wrap: pretty;
-  animation: rise 0.7s var(--ease) 0.08s both;
+  animation: rise 0.7s var(--ease) 0.42s both;
 }
 
 .hero-actions {
@@ -667,14 +671,14 @@ body::before {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 30px;
-  animation: rise 0.7s var(--ease) 0.16s both;
+  animation: rise 0.7s var(--ease) 0.5s both;
 }
 
 .hero-note {
   margin-top: 16px;
   font-size: 12.5px;
   color: var(--faint);
-  animation: rise 0.7s var(--ease) 0.24s both;
+  animation: rise 0.7s var(--ease) 0.58s both;
 }
 
 .hero-note a {
@@ -1128,6 +1132,7 @@ body::before {
   padding: 28px 32px;
   border-radius: var(--radius);
   background: transparent;
+  --glass-blur: 24px;
   transition: border-color 0.3s, background 0.3s;
 }
 
@@ -1234,6 +1239,7 @@ body::before {
   line-height: 1.12;
   letter-spacing: -0.035em;
   font-weight: 720;
+  animation: rise 0.7s var(--ease) 0.32s both;
 }
 
 .page-hero p {
@@ -1241,6 +1247,11 @@ body::before {
   margin: 12px auto 0;
   font-size: 14.5px;
   color: var(--muted);
+  animation: rise 0.7s var(--ease) 0.4s both;
+}
+
+.page-hero .crumbs {
+  animation: rise 0.7s var(--ease) 0.26s both;
 }
 
 .crumbs {
@@ -1435,6 +1446,7 @@ body::before {
   padding: 26px 28px;
   border-radius: var(--radius);
   background: transparent;
+  --glass-blur: 24px;
 }
 
 .dl-card .top {
