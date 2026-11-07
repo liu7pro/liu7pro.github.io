@@ -46,6 +46,141 @@
     el.textContent = String(new Date().getFullYear());
   });
 
+  // 自动同步 GitHub 最新 Release；失败时保留 config.js 的静态值
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function (ch) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[ch];
+    });
+  }
+
+  function formatFileSize(bytes) {
+    var mb = bytes / (1024 * 1024);
+    return (mb >= 100 ? Math.round(mb) : Math.round(mb * 10) / 10) + " MB";
+  }
+
+  function applyLatestRelease(rel) {
+    if (!rel) return;
+
+    var rawVersion =
+      rel.name && /^\d/.test(rel.name) ? rel.name : rel.tag_name || "";
+    var version = rawVersion;
+    if (version && !/^v/i.test(version) && /^\d/.test(version)) {
+      version = "v" + version;
+    }
+
+    var codename = rel.tag_name || "";
+    var date = rel.published_at ? rel.published_at.slice(0, 10) : "";
+
+    if (version) {
+      document.querySelectorAll("[data-version]").forEach(function (el) {
+        el.textContent = version;
+      });
+      document.querySelectorAll(".nav-version").forEach(function (el) {
+        el.textContent = version;
+      });
+    }
+
+    if (codename) {
+      document.querySelectorAll("[data-codename]").forEach(function (el) {
+        el.textContent = codename;
+      });
+    }
+
+    if (date) {
+      document.querySelectorAll("[data-release-date]").forEach(function (el) {
+        el.textContent = date;
+      });
+    }
+
+    var assets = rel.assets || [];
+    var asset =
+      assets.filter(function (item) {
+        return /\.exe$/i.test(item.name);
+      })[0] || assets[0];
+
+    if (asset) {
+      document.querySelectorAll("[data-file-size]").forEach(function (el) {
+        el.textContent = "约 " + formatFileSize(asset.size);
+      });
+      document.querySelectorAll("[data-file-size-en]").forEach(function (el) {
+        el.textContent = "~" + formatFileSize(asset.size);
+      });
+      document.querySelectorAll('[data-link="download"]').forEach(function (el) {
+        el.setAttribute("href", asset.browser_download_url);
+      });
+    }
+
+    var notes = document.querySelector("[data-release-notes]");
+    if (notes && rel.body) {
+      var items = rel.body
+        .split(/\r?\n/)
+        .map(function (line) {
+          return line.replace(/^[•\-*]\s*/, "").trim();
+        })
+        .filter(Boolean);
+      if (items.length) {
+        notes.innerHTML = items
+          .map(function (line) {
+            return "<li>" + escapeHtml(line) + "</li>";
+          })
+          .join("");
+      }
+    }
+
+    window.domeosRelease = rel;
+  }
+
+  function loadLatestRelease() {
+    var cacheKey = "domeos-release-json-v1";
+    try {
+      var cached = JSON.parse(sessionStorage.getItem(cacheKey));
+      if (cached && cached.time && Date.now() - cached.time < 30 * 60 * 1000) {
+        applyLatestRelease(cached.data);
+        return;
+      }
+    } catch (e) {}
+
+    if (!("fetch" in window)) return;
+
+    var controller =
+      "AbortController" in window ? new AbortController() : null;
+    var timer = controller
+      ? setTimeout(function () {
+          controller.abort();
+        }, 8000)
+      : null;
+
+    fetch("/assets/data/release.json?v=" + Date.now(), {
+      cache: "no-store",
+      signal: controller ? controller.signal : undefined
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json();
+      })
+      .then(function (rel) {
+        if (timer) clearTimeout(timer);
+        applyLatestRelease(rel);
+        try {
+          sessionStorage.setItem(
+            cacheKey,
+            JSON.stringify({ time: Date.now(), data: rel })
+          );
+        } catch (e) {}
+      })
+      .catch(function () {
+        if (timer) clearTimeout(timer);
+      });
+  }
+
+  loadLatestRelease();
+
   // 主题切换
   var root = document.documentElement;
   try {
