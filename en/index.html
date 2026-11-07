@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DomeOS AI — A native AI assistant for Windows</title>
+  <meta name="description" content="DomeOS AI is a native Windows client for AI agents, rebuilt with WinUI 3 and Windows App SDK. Fast startup, low memory, streaming chat, tool-call visualization and multi-session support.">
+  <meta name="theme-color" content="#0a0b0f">
+  <meta name="color-scheme" content="dark light">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DomeOS AI — A native AI assistant for Windows">
+  <meta property="og:description" content="A native Windows client for AI agents. Built with WinUI 3, instant startup.">
+  <link rel="alternate" hreflang="zh-CN" href="https://liu7pro.github.io/">
+  <link rel="alternate" hreflang="en" href="https://liu7pro.github.io/en/">
+  <link rel="alternate" hreflang="x-default" href="https://liu7pro.github.io/">
+  <link rel="icon" href="../assets/img/app.ico" sizes="any">
+  <link rel="icon" href="../assets/img/icon-32.png" type="image/png">
+  <link rel="apple-touch-icon" href="../assets/img/logo.png">
+  <style>
+    html { background: #0a0b0f; color-scheme: dark; }
+    html[data-theme="light"] { background: #f7f8fa; color-scheme: light; }
+    .page-curtain {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #0a0b0f;
+      pointer-events: none;
+      animation: curtain-out 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards;
+    }
+    html[data-theme="light"] .page-curtain { background: #f7f8fa; }
+    @keyframes curtain-out { to { opacity: 0; visibility: hidden; } }
+    @media (prefers-reduced-motion: reduce) { .page-curtain { display: none; } }
+  </style>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("domeos-theme");
+        if (t === "light") document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <div class="page-curtain" aria-hidden="true"></div>
+
+  <div class="bg-scene" aria-hidden="true">
+    <span class="orb o1"></span>
+    <span class="orb o2"></span>
+    <span class="orb o3"></span>
+    <span class="orb o4"></span>
+    <span class="grain"></span>
+  </div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <header class="site-header" id="header">
+    <div class="container nav glass">
+      <a class="brand" href="index.html" aria-label="DomeOS AI home">
+        <img class="mark" src="../assets/img/logo.png" alt="">
+        <span>DomeOS AI</span>
+        <span class="nav-version">v2.0</span>
+      </a>
+      <span class="nav-divider" aria-hidden="true"></span>
+      <nav class="nav-links" id="navLinks">
+        <span class="nav-hover" aria-hidden="true"></span>
+        <a href="#features">Features</a>
+        <a href="guide.html">Guide</a>
+        <a href="download.html">Download</a>
+        <a href="#" data-link="github" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light and dark theme">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 9.79 9.79z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+        </button>
+        <a class="lang-switch" href="../index.html" hreflang="zh-CN" aria-label="切换到中文">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3.5 12h17M12 3c2.4 3 2.4 15 0 18M12 3c-2.4 3-2.4 15 0 18"/></svg>
+          中文
+        </a>
+        <a class="btn btn-primary btn-sm" href="download.html">Download</a>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-icon-wrap">
+          <span class="hero-ring" aria-hidden="true"></span>
+          <div class="hero-icon glass">
+            <img src="../assets/img/logo.png" alt="DomeOS AI icon">
+          </div>
+        </div>
+
+        <div class="hero-badges">
+          <span>WinUI 3</span>
+          <span>.NET 9</span>
+          <span>Windows 10 / 11</span>
+        </div>
+
+        <h1>DomeOS AI</h1>
+        <p class="lead">
+          A native Windows client for AI agents. The interface is rebuilt with WinUI 3 —
+          instant startup, and only tens of megabytes in the background.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#" data-link="download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+            Download <span data-version>v2.0</span>
+          </a>
+          <a class="btn btn-ghost" href="guide.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            User Guide
+          </a>
+          <a class="btn btn-ghost" href="#" data-link="github" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.005 10.695.19-.32.305-.706.305-1.09 0-.54-.02-1.163-.02-1.77 0-1.22-1.31-1.67-1.31-2.01 0-.51 1.02-.12 1.99-.14 3.17-1.23 4.43 1.21 5.1-.58 2.3-1.12 1.58 0 0-.05 2.35-2.67 3.01-1.35-.01-1.95 0-1.95 0 0-.05 1.66-2.97 3.01 3.76-2.44 4.72-12-4.82-12-4.82 0 0-3.24 3.2-7.09 2.55 6.27-2.44 3.47-.05 1.66-2.97 3.01 2.09-.05 1.66-2.97 3.01 0 0 .05 2.35 2.67 3.01 1.22 1.21 1.87 1.44 4.5-.58 2.3-1.12 2.55-3.57 2.09-3.87 0 0 .05 1.66 2.97 3.01-.02.54-.02 1.06-.02 1.62 0 .38.15.78.36 1.08A12.02 12.02 0 0 0 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+
+        <p class="hero-note">
+          <span data-version>v2.0</span> “<span data-codename>Darling</span>” · <span data-release-date>2026-10-30</span> · x64 · <span data-file-size-en>~526 MB</span>
+          ·
+          <a href="#" data-link="releases" target="_blank" rel="noopener">Previous releases</a>
+        </p>
+
+        <div class="mockup-wrap reveal">
+          <div class="mockup" role="img" aria-label="DomeOS AI app interface preview">
+            <div class="titlebar">
+              <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+              <span class="title">DomeOS AI</span>
+              <div class="win-controls" aria-hidden="true"><span></span><span></span><span class="x"></span></div>
+            </div>
+            <div class="app-body">
+              <aside class="app-side">
+                <div class="side-search">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                  Search chats
+                </div>
+                <div>
+                  <div class="side-label">Recent</div>
+                  <div class="side-item active"><span class="ico"></span>Summarize weekly report<span class="meta">12:40</span></div>
+                  <div class="side-item"><span class="ico"></span>Explain this PowerShell<span class="meta">10:15</span></div>
+                  <div class="side-item"><span class="ico"></span>Find meeting notes<span class="meta">09:02</span></div>
+                </div>
+                <div>
+                  <div class="side-label">Tools</div>
+                  <div class="side-item"><span class="ico"></span>File access</div>
+                  <div class="side-item"><span class="ico"></span>Run commands</div>
+                </div>
+              </aside>
+              <div class="app-main">
+                <div class="app-top">
+                  <span class="pill"><i></i>Default model</span>
+                  <span class="pill">Tools enabled</span>
+                  <div class="spacer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h6"/></svg>
+                  </div>
+                </div>
+                <div class="chat">
+                  <div class="msg user">
+                    <div class="avatar">You</div>
+                    <div class="bubble">Turn this weekly report into key points, then draft next week's plan.</div>
+                  </div>
+                  <div class="msg">
+                    <div class="avatar">D</div>
+                    <div class="bubble">
+                      Read <b>weekly-report.docx</b>, 3 work items.<br>
+                      <b>This week</b><br>
+                      · Refactored the login flow; error rate down to 0.4%<br>
+                      · UI review complete; 3 interaction issues left<br>
+                      <b>Next week</b><br>
+                      · Fix the remaining issues and run regression<br>
+                      · Review the offline cache proposal
+                    </div>
+                  </div>
+                  <div class="msg">
+                    <div class="avatar">D</div>
+                    <div class="bubble"><span class="typing"><i></i><i></i><i></i></span></div>
+                  </div>
+                </div>
+                <div class="composer">
+                  <span class="hint">Ask DomeOS, or use the global shortcut…</span>
+                  <span class="send" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14-7-4 14-3-6-7-1z"/></svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Features</span>
+          <h2>Native UI, light footprint</h2>
+          <p>The interface layer is rebuilt with WinUI 3 and Windows App SDK. Startup, memory and interaction all work the Windows way.</p>
+        </div>
+
+        <div class="feature-groups">
+          <div class="feature-group reveal">
+            <div>
+              <h3>Native Windows experience</h3>
+              <p class="group-desc">Native XAML replaces the web rendering pipeline, so windows, controls and input are truly native.</p>
+            </div>
+            <ul class="feature-list">
+              <li><b>Mica / Acrylic</b><span>Blends with the Windows 11 visual language; the window follows your desktop.</span></li>
+              <li><b>System theme</b><span>Light, dark and accent colors update in real time.</span></li>
+              <li><b>Native input</b><span>Context menus, drag and drop, touchpad gestures and IME, all native.</span></li>
+              <li><b>High DPI &amp; multi-monitor</b><span>Sharp at any scaling ratio.</span></li>
+              <li><b>Accessibility</b><span>Narrator, full keyboard navigation and UI Automation.</span></li>
+            </ul>
+          </div>
+
+          <div class="feature-group reveal">
+            <div>
+              <h3>Light and portable</h3>
+              <p class="group-desc">No installer, no MSIX, no certificates. The app and your data stay where you can see them.</p>
+            </div>
+            <ul class="feature-list">
+              <li><b>Single-file distribution</b><span>Download one EXE and run it from anywhere.</span></li>
+              <li><b>Your data, your folder</b><span>Config and sessions live in <code>%LOCALAPPDATA%\DomeOS</code> and move with the folder.</span></li>
+              <li><b>Clean uninstall</b><span>Delete the folder and you're done.</span></li>
+              <li><b>In-place upgrade</b><span>Replace the old file; data and settings stay.</span></li>
+            </ul>
+          </div>
+
+          <div class="feature-group reveal">
+            <div>
+              <h3>Full agent capabilities</h3>
+              <p class="group-desc">More than a chat window. Sessions, tool calls and code rendering all happen on the desktop.</p>
+            </div>
+            <ul class="feature-list">
+              <li><b>Streaming chat</b><span>Token-by-token rendering that stays smooth on long replies.</span></li>
+              <li><b>Multi-session</b><span>History, rename, search and archive.</span></li>
+              <li><b>Tool-call visualization</b><span>Every step of the agent's reasoning and calls, structured.</span></li>
+              <li><b>Code highlighting</b><span>Native rendering with one-click copy.</span></li>
+              <li><b>Markdown &amp; math</b><span>Full rendering support.</span></li>
+              <li><b>Tray resident</b><span>Global shortcut to summon the sidebar anytime.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-inner glass reveal">
+          <img src="../assets/img/logo.png" alt="">
+          <div class="cta-text">
+            <h2>Download DomeOS AI</h2>
+            <p><span data-version>v2.0</span> “<span data-codename>Darling</span>” · Windows 10 1809+ · x64</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="#" data-link="download">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+              Download installer
+            </a>
+            <a class="btn btn-ghost" href="guide.html">Read the guide</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">
+            <img class="mark" src="../assets/img/logo.png" alt="">
+            DomeOS AI
+          </a>
+          <p>A native Windows client for AI agents, built with WinUI 3 and Windows App SDK.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="download.html">Download</a>
+          <a href="guide.html">User Guide</a>
+          <a href="index.html#features">Features</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#" data-link="github" target="_blank" rel="noopener">GitHub</a>
+          <a href="#" data-link="releases" target="_blank" rel="noopener">Releases</a>
+          <a href="#" data-link="issues" target="_blank" rel="noopener">Issues</a>
+        </div>
+        <div class="footer-col">
+          <h4>About</h4>
+          <a href="guide.html#data">Data &amp; privacy</a>
+          <a href="download.html#requirements">System requirements</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> DomeOS Team. All rights reserved.</span>
+        <span>Powered by GitHub Pages</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/glass.js"></script>
+</body>
+</html>
