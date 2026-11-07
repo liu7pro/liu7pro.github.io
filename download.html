@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>下载 — DomeOS AI</title>
+  <meta name="description" content="下载 DomeOS AI Windows 客户端 v2.0，支持 Windows 10 1809 及以上版本。">
+  <meta name="theme-color" content="#0a0b0f">
+  <link rel="icon" href="assets/img/app.ico" sizes="any">
+  <link rel="icon" href="assets/img/icon-32.png" type="image/png">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("domeos-theme");
+        if (t === "light") document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="site-header" id="header">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="DomeOS AI 首页">
+        <img class="mark" src="assets/img/logo.png" alt="">
+        DomeOS AI
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html#features">功能</a>
+        <a href="guide.html">使用指南</a>
+        <a href="download.html">下载</a>
+        <a href="#" data-link="github" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换明暗主题">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 9.79 9.79z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+        </button>
+        <a class="btn btn-primary btn-sm" href="download.html">下载</a>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="打开菜单" aria-expanded="false">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="crumbs"><a href="index.html">首页</a><span>/</span><span>下载</span></div>
+        <h1>下载 DomeOS AI</h1>
+        <p><span data-version>v2.0</span> “<span data-codename>Darling</span>”，发布于 <span data-release-date>2026-10-30</span>。适用于 Windows 10 1809 及以上版本。</p>
+      </div>
+    </section>
+
+    <div class="container" style="padding-bottom:96px">
+      <div class="dl-grid">
+        <div class="dl-card reveal">
+          <div class="top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 20h8"/><path d="M12 17v3"/></svg>
+            <h3>Windows x64</h3>
+          </div>
+          <p class="sub">适用于 Intel / AMD 设备，Windows 10 1809 及以上</p>
+          <a class="btn btn-primary" href="#" data-link="download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+            下载 <span data-version>v2.0</span> 安装包
+          </a>
+          <div class="info">
+            <span>DomeOS-AI-Setup.exe</span>
+            <span><span data-file-size>约 526 MB</span> · GitHub Releases</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:20px">
+        <span>从 <a href="#" data-link="releases" target="_blank" rel="noopener">GitHub Releases</a> 直接下载。如下载较慢，可使用 GitHub 镜像或代理。</span>
+      </div>
+
+      <article class="docs-card" id="requirements" style="margin-top:28px">
+        <h2>系统要求</h2>
+        <table class="stack-table">
+          <thead><tr><th>项目</th><th>要求</th></tr></thead>
+          <tbody>
+            <tr><td>操作系统</td><td>Windows 10 1809（17763）及以上 / Windows 11</td></tr>
+            <tr><td>架构</td><td>x64</td></tr>
+            <tr><td>磁盘空间</td><td>安装包约 526 MB，另需预留应用与数据空间</td></tr>
+            <tr><td>运行库</td><td>Windows App Runtime 1.7+（若安装包未自带）</td></tr>
+            <tr><td>网络</td><td>使用云端模型时需要访问对应接口</td></tr>
+          </tbody>
+        </table>
+
+        <h3>安装步骤</h3>
+        <ol>
+          <li>下载 <code>DomeOS-AI-Setup.exe</code>；</li>
+          <li>双击运行，按提示完成安装；</li>
+          <li>首次启动后配置模型服务，详见 <a href="guide.html#models">模型服务</a>；</li>
+          <li>遇到问题可查阅 <a href="guide.html#faq">常见问题</a>。</li>
+        </ol>
+
+        <h3>升级与卸载</h3>
+        <p>新版本可直接覆盖安装，会话与配置保留。卸载时通过 Windows「设置 → 应用」移除，并按需清理 <code>%LOCALAPPDATA%\DomeOS</code>。</p>
+      </article>
+
+      <article class="docs-card" style="margin-top:16px">
+        <h2>本次更新 · <span data-version>v2.0</span></h2>
+        <ul>
+          <li>新增桌宠样式：Claude 螃蟹、Claude 娘与 ChatGPT；</li>
+          <li>新增「主页」，可快捷导入回忆并进入对话；</li>
+          <li>新增 <code>Win + C</code> 快捷键唤起侧边栏，可在设置中关闭；</li>
+          <li>语音识别新增 SenseVoiceSmall 模型支持；</li>
+          <li>优化侧边栏流畅度、桌宠拖拽动画与整体资源占用；</li>
+          <li>修复深浅色模式切换不同步等问题。</li>
+        </ul>
+        <p>完整变更记录见 <a href="#" data-link="releases" target="_blank" rel="noopener">GitHub Releases</a>。</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">
+            <img class="mark" src="assets/img/logo.png" alt="">
+            DomeOS AI
+          </a>
+          <p>AI Agent 的 Windows 原生客户端。基于 WinUI 3 与 Windows App SDK 构建。</p>
+        </div>
+        <div class="footer-col">
+          <h4>产品</h4>
+          <a href="download.html">下载</a>
+          <a href="guide.html">使用指南</a>
+          <a href="index.html#features">功能特性</a>
+        </div>
+        <div class="footer-col">
+          <h4>资源</h4>
+          <a href="#" data-link="github" target="_blank" rel="noopener">GitHub 仓库</a>
+          <a href="#" data-link="releases" target="_blank" rel="noopener">版本发布</a>
+          <a href="#" data-link="issues" target="_blank" rel="noopener">问题反馈</a>
+        </div>
+        <div class="footer-col">
+          <h4>关于</h4>
+          <a href="guide.html#data">数据与隐私</a>
+          <a href="download.html#requirements">系统要求</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> DomeOS Team. All rights reserved.</span>
+        <span>Powered by GitHub Pages</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
