@@ -20,8 +20,17 @@
 </head>
 <body>
 
+  <div class="bg-scene" aria-hidden="true">
+    <span class="orb o1"></span>
+    <span class="orb o2"></span>
+    <span class="orb o3"></span>
+    <span class="orb o4"></span>
+    <span class="grain"></span>
+  </div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
   <header class="site-header" id="header">
-    <div class="container nav">
+    <div class="container nav glass" data-liquid data-liquid-blur="10">
       <a class="brand" href="index.html" aria-label="DomeOS AI 首页">
         <img class="mark" src="assets/img/logo.png" alt="">
         DomeOS AI
@@ -56,7 +65,7 @@
 
     <div class="container" style="padding-bottom:96px">
       <div class="dl-grid">
-        <div class="dl-card reveal">
+        <div class="dl-card glass reveal" data-liquid data-liquid-blur="18">
           <div class="top">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 20h8"/><path d="M12 17v3"/></svg>
             <h3>Windows x64</h3>
@@ -154,5 +163,6 @@
 
   <script src="assets/js/config.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/liquid-glass.js"></script>
 </body>
 </html>
