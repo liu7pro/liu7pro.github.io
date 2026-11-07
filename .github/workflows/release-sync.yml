@@ -1,0 +1,34 @@
+name: Sync latest release
+
+on:
+  release:
+    types: [published]
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p assets/data
+          gh api "repos/${{ github.repository }}/releases/latest" > assets/data/release.json
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/release.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: sync latest release"
+            git push
+          fi
