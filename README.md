@@ -19,7 +19,7 @@ DomeOS AI 的 GitHub Pages 静态站点，包含首页、下载页与使用指�
 │   ├── css/style.css     # 全部样式（深色 / 浅色主题）
 │   ├── js/config.js      # 链接、版本号、安装包地址（改这一处即可）
 │   ├── js/main.js        # 主题切换、菜单、滚动动画、目录高亮
-│   ├── js/liquid-glass.js # 液态玻璃：SDF 位移贴图 + SVG 折射
+│   ├── js/glass.js       # 高斯玻璃：指针高光、环境微光
 │   └── img/              # logo.png、icon-32.png、app.ico（来自项目仓库）
 ├── .nojekyll             # 跳过 Jekyll，确保静态资源原样发布
 └── deploy.ps1            # 初始化并推送到 <用户名>.github.io
@@ -33,7 +33,8 @@ DomeOS AI 的 GitHub Pages 静态站点，包含首页、下载页与使用指�
   - `downloadUrl`：安装包直链，留空则跳转 Releases
 - **文案**：直接修改各 HTML 文件
 - **配色与排版**：`assets/css/style.css` 顶部的 CSS 变量
-- **液态玻璃**：给元素加上 `class="glass"` 和 `data-liquid` 即可；`data-liquid-blur` 控制模糊强度。实现参考 [shuding/liquid-glass](https://github.com/shuding/liquid-glass)（MIT）
+- **玻璃效果**：给元素加上 `class="glass"` 即可，模糊强度由 CSS 变量 `--glass-blur` 控制
+- **入场动画**：每页顶部的 `.page-curtain` 在加载时淡出，配合首屏元素的延迟上浮
 
 图标来自项目仓库 `Assets/logo.png`、`Assets/icon-32.png`、`Assets/app.ico`，替换时保持同名即可。
 
