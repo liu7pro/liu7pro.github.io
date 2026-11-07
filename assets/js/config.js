@@ -8,14 +8,14 @@ window.DOMEOS_CONFIG = {
   githubUser: "liu7pro",
   projectRepo: "DomeOS-AI-Agent-with-WinUI-3",
 
-  // 版本信息
-  version: "v2.0",
-  codename: "Darling",
-  releaseDate: "2026-10-30",
-  fileSize: "约 526 MB",
-  fileSizeEn: "~526 MB",
+  // 版本信息（静态兜底；页面会优先读取 assets/data/release.json）
+  version: "v3.0",
+  codename: "Really",
+  releaseDate: "2026-11-07",
+  fileSize: "约 528 MB",
+  fileSizeEn: "~528 MB",
 
   // 安装包直链（留空则跳转到 Releases 页面）
   downloadUrl:
-    "https://github.com/liu7pro/DomeOS-AI-Agent-with-WinUI-3/releases/download/Darling/DomeOS-AI-Setup.exe",
+    "https://github.com/liu7pro/DomeOS-AI-Agent-with-WinUI-3/releases/download/Really/DomeOS-AI-Setup-3.0.exe",
 };
