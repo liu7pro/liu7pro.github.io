@@ -14,11 +14,15 @@ DomeOS AI 的 GitHub Pages 静态站点，包含首页、下载页与使用指�
 ├── index.html            # 首页：Hero、界面示意、功能分组、下载 CTA
 ├── download.html         # 下载页：安装包、系统要求、更新说明
 ├── guide.html            # 使用指南：安装、模型服务、数据、构建、FAQ
+├── about.html            # 关于 DomeOS Team
+├── legal.html            # 用户协议与隐私政策（由团队协议文档生成）
 ├── 404.html              # 自定义 404（中英双语）
 ├── en/                   # English pages
 │   ├── index.html
 │   ├── guide.html
-│   └── download.html
+│   ├── download.html
+│   ├── about.html
+│   └── legal.html
 ├── assets/
 │   ├── css/style.css     # 全部样式（深色 / 浅色主题）
 │   ├── js/config.js      # 链接、版本号、安装包地址（改这一处即可）
