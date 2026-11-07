@@ -578,6 +578,34 @@ section[id],
   background: rgba(16, 20, 38, 0.05);
 }
 
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  transition: color 0.2s, background 0.2s;
+}
+
+.lang-switch svg {
+  width: 14px;
+  height: 14px;
+}
+
+.lang-switch:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="light"] .lang-switch:hover {
+  background: rgba(16, 20, 38, 0.05);
+}
+
 /* 阅读进度条 */
 .scroll-progress {
   position: fixed;
