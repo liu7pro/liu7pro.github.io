@@ -19,9 +19,10 @@ jobs:
       - name: Fetch latest release
         env:
           GH_TOKEN: ${{ github.token }}
+          SOURCE_REPO: liu7pro/DomeOS-AI-Agent-with-WinUI-3
         run: |
           mkdir -p assets/data
-          gh api "repos/${{ github.repository }}/releases/latest" > assets/data/release.json
+          gh api "repos/${SOURCE_REPO}/releases/latest" > assets/data/release.json
 
       - name: Commit changes
         run: |
@@ -30,5 +31,5 @@ jobs:
           git add assets/data/release.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: sync latest release"
-            git push
+            git push origin HEAD:main
           fi
