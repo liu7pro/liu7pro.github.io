@@ -1736,6 +1736,240 @@ body::before {
   color: var(--faint);
 }
 
+/* ---------- 关于页 ---------- */
+.about-mark {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 14px;
+  filter: drop-shadow(0 10px 26px rgba(46, 157, 244, 0.28));
+}
+
+.about {
+  max-width: 900px;
+  padding-bottom: 96px;
+}
+
+.about-card {
+  padding: 32px 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.about-card p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.about-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.about-meta span {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.about-section {
+  margin-top: 44px;
+}
+
+.about-section h2 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.thanks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.thanks-item {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  transition: transform 0.25s var(--ease), border-color 0.25s;
+}
+
+.thanks-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+}
+
+.thanks-item .tag {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.about-quote {
+  margin: 64px 0 26px;
+  text-align: center;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  background: linear-gradient(180deg, #ffffff 18%, var(--blue) 130%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .about-quote {
+  background-image: linear-gradient(180deg, #101227 10%, #1c86d8 130%);
+}
+
+.about-contact {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.about-contact a {
+  color: var(--blue);
+}
+
+.about-links {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.about-links a {
+  color: var(--muted);
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.about-links a:hover {
+  color: var(--text);
+}
+
+/* ---------- 法律页 ---------- */
+.legal-body h2 {
+  margin: 40px 0 14px;
+  font-size: 21px;
+  letter-spacing: -0.02em;
+}
+
+.legal-body .legal-section:first-of-type h2 {
+  margin-top: 0;
+}
+
+.legal-body h3 {
+  margin: 26px 0 8px;
+  font-size: 16px;
+}
+
+.legal-body h4 {
+  margin: 18px 0 6px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.legal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.legal-meta span {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.legal-section + .legal-section {
+  margin-top: 36px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.legal-fold {
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-soft);
+}
+
+.legal-fold summary {
+  padding: 14px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.legal-fold[open] summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.legal-fold > h3,
+.legal-fold > p,
+.legal-fold > ul {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.legal-fold > h3:first-of-type {
+  margin-top: 16px;
+}
+
+.legal-fold > p:last-child {
+  margin-bottom: 16px;
+}
+
+.legal-sign {
+  text-align: right;
+  color: var(--faint);
+}
+
+.legal-top {
+  margin-top: 36px;
+  text-align: right;
+  font-size: 12.5px;
+}
+
+.legal-top a {
+  color: var(--blue);
+}
+
+@media (max-width: 720px) {
+  .about-card {
+    padding: 24px;
+  }
+
+  .thanks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .thanks-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- 滚动显现 ---------- */
 .reveal {
   opacity: 0;
