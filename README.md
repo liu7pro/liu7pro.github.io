@@ -14,7 +14,11 @@ DomeOS AI 的 GitHub Pages 静态站点，包含首页、下载页与使用指�
 ├── index.html            # 首页：Hero、界面示意、功能分组、下载 CTA
 ├── download.html         # 下载页：安装包、系统要求、更新说明
 ├── guide.html            # 使用指南：安装、模型服务、数据、构建、FAQ
-├── 404.html              # 自定义 404
+├── 404.html              # 自定义 404（中英双语）
+├── en/                   # English pages
+│   ├── index.html
+│   ├── guide.html
+│   └── download.html
 ├── assets/
 │   ├── css/style.css     # 全部样式（深色 / 浅色主题）
 │   ├── js/config.js      # 链接、版本号、安装包地址（改这一处即可）
@@ -29,7 +33,7 @@ DomeOS AI 的 GitHub Pages 静态站点，包含首页、下载页与使用指�
 
 - **链接与版本**：`assets/js/config.js`
   - `githubUser` / `projectRepo`：GitHub 仓库位置
-  - `version` / `codename` / `releaseDate` / `fileSize`：全站版本信息
+  - `version` / `codename` / `releaseDate` / `fileSize` / `fileSizeEn`：全站版本信息（中/英）
   - `downloadUrl`：安装包直链，留空则跳转 Releases
 - **文案**：直接修改各 HTML 文件
 - **配色与排版**：`assets/css/style.css` 顶部的 CSS 变量
@@ -37,6 +41,14 @@ DomeOS AI 的 GitHub Pages 静态站点，包含首页、下载页与使用指�
 - **入场动画**：每页顶部的 `.page-curtain` 在加载时淡出，配合首屏元素的延迟上浮
 
 图标来自项目仓库 `Assets/logo.png`、`Assets/icon-32.png`、`Assets/app.ico`，替换时保持同名即可。
+
+## 多语言
+
+- 中文：`/`
+- English：`/en/`
+- 顶栏的地球按钮可在两种语言间切换，页面通过 `hreflang` 标注对应版本。
+
+新增语言时，复制 `en/` 目录并翻译文案，然后更新各页的 `<html lang>`、`hreflang` 与顶栏切换链接即可；样式与脚本完全复用。
 
 ## 本地预览
 
