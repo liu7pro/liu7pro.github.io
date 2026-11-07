@@ -13,6 +13,7 @@ window.DOMEOS_CONFIG = {
   codename: "Darling",
   releaseDate: "2026-10-30",
   fileSize: "约 526 MB",
+  fileSizeEn: "~526 MB",
 
   // 安装包直链（留空则跳转到 Releases 页面）
   downloadUrl:
