@@ -38,6 +38,10 @@
     el.textContent = cfg.fileSize || "";
   });
 
+  document.querySelectorAll("[data-file-size-en]").forEach(function (el) {
+    el.textContent = cfg.fileSizeEn || "";
+  });
+
   document.querySelectorAll("[data-year]").forEach(function (el) {
     el.textContent = String(new Date().getFullYear());
   });
