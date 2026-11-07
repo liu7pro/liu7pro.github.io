@@ -23,6 +23,9 @@
   --max: 1080px;
   --header-h: 64px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --glass-bg: rgba(12, 14, 22, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-highlight: rgba(255, 255, 255, 0.55);
   --font: "Segoe UI Variable Display", "Segoe UI", -apple-system,
     BlinkMacSystemFont, "Microsoft YaHei UI", "PingFang SC", "Hiragino Sans GB",
     sans-serif;
@@ -41,6 +44,9 @@
   --muted: #5d6274;
   --faint: #8a8fa0;
   --blue-soft: rgba(46, 157, 244, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(16, 20, 38, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.95);
   color-scheme: light;
 }
 
@@ -64,6 +70,214 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* ---------- 背景：缓慢流动的光斑，为液态玻璃提供折射内容 ---------- */
+.bg-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg);
+}
+
+.bg-scene .orb {
+  position: absolute;
+  width: 52vw;
+  height: 52vw;
+  max-width: 780px;
+  max-height: 780px;
+  border-radius: 50%;
+  filter: blur(72px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  animation: orbMove 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.bg-scene .o1 {
+  top: -16vw;
+  left: 2vw;
+  background: radial-gradient(circle, rgba(46, 157, 244, 0.55), transparent 66%);
+}
+
+.bg-scene .o2 {
+  top: 12vh;
+  right: -14vw;
+  background: radial-gradient(circle, rgba(124, 92, 255, 0.4), transparent 66%);
+  animation-delay: -9s;
+  animation-duration: 31s;
+}
+
+.bg-scene .o3 {
+  bottom: -22vw;
+  left: 26vw;
+  background: radial-gradient(circle, rgba(245, 200, 76, 0.22), transparent 66%);
+  animation-delay: -16s;
+  animation-duration: 36s;
+}
+
+.bg-scene .o4 {
+  top: 42vh;
+  left: -18vw;
+  background: radial-gradient(circle, rgba(40, 220, 200, 0.28), transparent 66%);
+  animation-delay: -4s;
+  animation-duration: 29s;
+}
+
+@keyframes orbMove {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(5vw, 4vh, 0) scale(1.14);
+  }
+}
+
+.bg-scene .grain {
+  position: absolute;
+  inset: -40%;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+[data-theme="light"] .bg-scene .orb {
+  mix-blend-mode: normal;
+  opacity: 0.26;
+}
+
+[data-theme="light"] .bg-scene .grain {
+  opacity: 0.025;
+}
+
+/* 跟随指针的微光 */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 720px;
+  height: 720px;
+  margin: -360px 0 0 -360px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(46, 157, 244, 0.16),
+    rgba(46, 157, 244, 0.05) 42%,
+    transparent 68%
+  );
+  filter: blur(12px);
+  will-change: transform;
+}
+
+[data-theme="light"] .cursor-glow {
+  background: radial-gradient(
+    circle,
+    rgba(46, 157, 244, 0.12),
+    rgba(46, 157, 244, 0.04) 42%,
+    transparent 68%
+  );
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* ---------- 液态玻璃基础层 ---------- */
+.glass {
+  position: relative;
+  background-color: var(--glass-bg);
+  background-image: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0.02) 42%,
+    rgba(255, 255, 255, 0.07) 100%
+  );
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 22px 60px -28px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(16px) saturate(170%);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  isolation: isolate;
+}
+
+[data-theme="light"] .glass {
+  background-image: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0.16) 48%,
+    rgba(255, 255, 255, 0.32)
+  );
+  box-shadow: 0 22px 55px -30px rgba(22, 28, 62, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* 渐变描边 */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    var(--glass-highlight),
+    rgba(255, 255, 255, 0.05) 34%,
+    rgba(255, 255, 255, 0.24) 62%,
+    rgba(255, 255, 255, 0.04)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* 指针高光 */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    200px circle at var(--gx, 50%) var(--gy, 0%),
+    rgba(255, 255, 255, 0.16),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.glass:hover::after {
+  opacity: 1;
+}
+
+/* 内容始终压在玻璃高光之上 */
+.nav > *,
+.cta-inner > *,
+.dl-card > * {
+  position: relative;
+  z-index: 3;
+}
+
+.glass-soft {
+  background: rgba(17, 19, 24, 0.55);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+}
+
+[data-theme="light"] .glass-soft {
+  background: rgba(255, 255, 255, 0.7);
 }
 
 a {
@@ -121,25 +335,25 @@ section[id],
   z-index: 50;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid transparent;
-  transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
-}
-
-.site-header.scrolled {
-  background: rgba(10, 11, 15, 0.82);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border-bottom-color: var(--border);
-}
-
-[data-theme="light"] .site-header.scrolled {
-  background: rgba(247, 248, 250, 0.86);
 }
 
 .nav {
   display: flex;
   align-items: center;
   gap: 26px;
+  padding: 5px 8px;
+  border-radius: 14px;
+  transition: box-shadow 0.35s var(--ease);
+}
+
+.site-header.scrolled .nav {
+  box-shadow: 0 22px 55px -18px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="light"] .site-header.scrolled .nav {
+  box-shadow: 0 22px 50px -24px rgba(22, 28, 62, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .brand {
@@ -317,11 +531,22 @@ section[id],
 }
 
 .hero-icon {
-  width: 82px;
-  height: 82px;
-  margin: 0 auto 20px;
-  filter: drop-shadow(0 14px 34px rgba(46, 157, 244, 0.24));
+  width: 118px;
+  height: 118px;
+  margin: 0 auto 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  overflow: hidden;
   animation: float 7s ease-in-out infinite;
+}
+
+.hero-icon img {
+  position: relative;
+  z-index: 3;
+  width: 74px;
+  height: 74px;
+  filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.45));
 }
 
 @keyframes float {
@@ -403,7 +628,28 @@ body::before {
   line-height: 1.05;
   letter-spacing: -0.045em;
   font-weight: 750;
-  animation: rise 0.7s var(--ease) both;
+  background: linear-gradient(180deg, #ffffff 16%, #c6d0e6 88%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-size: 100% 220%;
+  animation: rise 0.7s var(--ease) both,
+    titleSheen 9s 1s ease-in-out infinite;
+}
+
+[data-theme="light"] .hero h1 {
+  background-image: linear-gradient(180deg, #101227 16%, #4b5268 88%);
+}
+
+@keyframes titleSheen {
+  0%,
+  100% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
 }
 
 .hero .lead {
@@ -449,11 +695,18 @@ body::before {
 .mockup {
   border: 1px solid var(--border-strong);
   border-radius: 14px;
-  background: var(--surface);
-  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.8);
+  background: rgba(17, 19, 24, 0.55);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
   overflow: hidden;
   text-align: left;
   transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+
+[data-theme="light"] .mockup {
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .mockup:hover {
@@ -873,14 +1126,13 @@ body::before {
   flex-wrap: wrap;
   gap: 20px;
   padding: 28px 32px;
-  border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: transparent;
   transition: border-color 0.3s, background 0.3s;
 }
 
 .cta-inner:hover {
-  border-color: rgba(46, 157, 244, 0.35);
+  border-color: rgba(46, 157, 244, 0.4);
 }
 
 .cta-inner img {
@@ -1181,9 +1433,8 @@ body::before {
 
 .dl-card {
   padding: 26px 28px;
-  border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: transparent;
 }
 
 .dl-card .top {
@@ -1343,8 +1594,17 @@ body::before {
   }
 
   .hero-icon {
-    width: 68px;
-    height: 68px;
+    width: 96px;
+    height: 96px;
+  }
+
+  .hero-icon img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .nav {
+    padding: 4px 6px;
   }
 
   .feature-list {
