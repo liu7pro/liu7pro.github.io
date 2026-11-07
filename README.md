@@ -29,6 +29,10 @@ DomeOS AI 的 GitHub Pages 静态站点，包含首页、下载页与使用指�
 │   ├── js/main.js        # 主题切换、菜单、滚动动画、目录高亮
 │   ├── js/glass.js       # 玻璃高光、导航跟随高光、3D 倾斜、背景视差
 │   └── img/              # logo.png、icon-32.png、app.ico（来自项目仓库）
+├── .github/workflows/
+│   └── release-sync.yml  # 发布 Release / 每 6 小时同步最新版本到 release.json
+├── assets/data/
+│   └── release.json      # 最新 GitHub Release 的原始数据（页面运行时读取）
 ├── .nojekyll             # 跳过 Jekyll，确保静态资源原样发布
 └── deploy.ps1            # 初始化并推送到 <用户名>.github.io
 ```
@@ -43,6 +47,7 @@ DomeOS AI 的 GitHub Pages 静态站点，包含首页、下载页与使用指�
 - **配色与排版**：`assets/css/style.css` 顶部的 CSS 变量
 - **玻璃效果**：给元素加上 `class="glass"` 即可，模糊强度由 CSS 变量 `--glass-blur` 控制
 - **入场动画**：每页顶部的 `.page-curtain` 在加载时淡出，配合首屏元素的延迟上浮
+- **版本自动更新**：页面优先读取 `assets/data/release.json`，自动同步最新版本号、下载直链、文件大小和中文更新说明；GitHub Actions 在发布 Release 时、以及每 6 小时自动刷新该文件。请求失败时回退到 `config.js` 的静态值
 
 图标来自项目仓库 `Assets/logo.png`、`Assets/icon-32.png`、`Assets/app.ico`，替换时保持同名即可。
 
