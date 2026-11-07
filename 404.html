@@ -5,8 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>页面不存在 — DomeOS AI</title>
   <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="dark light">
   <link rel="icon" href="/assets/img/app.ico" sizes="any">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    html { background: #0a0b0f; color-scheme: dark; }
+    html[data-theme="light"] { background: #f7f8fa; color-scheme: light; }
+    .page-curtain {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #0a0b0f;
+      pointer-events: none;
+      animation: curtain-out 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards;
+    }
+    html[data-theme="light"] .page-curtain { background: #f7f8fa; }
+    @keyframes curtain-out { to { opacity: 0; visibility: hidden; } }
+    @media (prefers-reduced-motion: reduce) { .page-curtain { display: none; } }
+  </style>
   <script>
     (function () {
       try {
@@ -15,8 +30,10 @@
       } catch (e) {}
     })();
   </script>
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
+  <div class="page-curtain" aria-hidden="true"></div>
   <div class="bg-scene" aria-hidden="true">
     <span class="orb o1"></span>
     <span class="orb o2"></span>
