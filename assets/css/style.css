@@ -1192,6 +1192,12 @@ body::before {
   background: var(--blue);
 }
 
+.msg .avatar-ai {
+  display: block;
+  background: transparent;
+  object-fit: contain;
+}
+
 .msg .bubble {
   padding: 9px 13px;
   border-radius: 10px;
