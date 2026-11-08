@@ -297,4 +297,197 @@
       if (section) sectionObserver.observe(section);
     });
   }
+
+  // 外链确认弹窗
+  (function () {
+    var isEn = (document.documentElement.lang || "").toLowerCase().indexOf("en") === 0;
+
+    var overlay = document.createElement("div");
+    overlay.className = "site-modal";
+    overlay.id = "siteModal";
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.innerHTML =
+      '<div class="site-modal-card" role="dialog" aria-modal="true" aria-labelledby="siteModalTitle">' +
+      '<h3 id="siteModalTitle"></h3>' +
+      '<p id="siteModalDesc"></p>' +
+      '<div class="site-modal-actions">' +
+      '<button class="btn btn-quiet" type="button" data-modal-cancel></button>' +
+      '<button class="btn btn-primary" type="button" data-modal-continue></button>' +
+      "</div></div>";
+    document.body.appendChild(overlay);
+
+    var titleEl = overlay.querySelector("#siteModalTitle");
+    var descEl = overlay.querySelector("#siteModalDesc");
+    var cancelBtn = overlay.querySelector("[data-modal-cancel]");
+    var continueBtn = overlay.querySelector("[data-modal-continue]");
+    var pendingUrl = "";
+    var pendingLink = null;
+
+    function hide() {
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      if (pendingLink) {
+        try {
+          pendingLink.focus();
+        } catch (e) {}
+      }
+    }
+
+    function show(link, url, title, desc, action) {
+      pendingUrl = url;
+      pendingLink = link;
+      titleEl.textContent = title;
+      descEl.textContent = desc;
+      cancelBtn.textContent = isEn ? "Cancel" : "取消";
+      continueBtn.textContent = action || (isEn ? "Continue" : "继续访问");
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      setTimeout(function () {
+        try {
+          continueBtn.focus();
+        } catch (e) {}
+      }, 50);
+    }
+
+    cancelBtn.addEventListener("click", hide);
+    overlay.addEventListener("click", function (event) {
+      if (event.target === overlay) hide();
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && overlay.classList.contains("show")) hide();
+    });
+    continueBtn.addEventListener("click", function () {
+      var url = pendingUrl;
+      hide();
+      if (url) window.open(url, "_blank", "noopener");
+    });
+
+    document.addEventListener(
+      "click",
+      function (event) {
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return;
+        }
+        var target = event.target;
+        if (!target || !target.closest) return;
+        var link = target.closest("a[href]");
+        if (!link) return;
+
+        var href = link.getAttribute("href");
+        if (!href || href.charAt(0) === "#" || /^(mailto|tel):/i.test(href)) {
+          return;
+        }
+
+        var url;
+        try {
+          url = new URL(link.href, location.href);
+        } catch (e) {
+          return;
+        }
+        if (url.protocol !== "http:" && url.protocol !== "https:") return;
+        if (url.origin === location.origin) return;
+
+        event.preventDefault();
+        var title =
+          link.getAttribute("data-modal-title") ||
+          (isEn ? "External link" : "外部链接提示");
+        var desc =
+          link.getAttribute("data-modal-desc") ||
+          (isEn
+            ? "You are about to leave DomeOS AI. Continue?"
+            : "即将跳转到外部站点，是否继续？");
+        var action =
+          link.getAttribute("data-modal-action") ||
+          (isEn ? "Continue" : "继续访问");
+        show(link, url.href, title, desc, action);
+      },
+      true
+    );
+  })();
+
+  // 背景音乐控制
+  (function () {
+    var actions = document.querySelector(".nav-actions");
+    if (!actions) return;
+
+    var isEn = (document.documentElement.lang || "").toLowerCase().indexOf("en") === 0;
+    var src = (cfg.music && cfg.music.src) || "/assets/audio/bgm.mp3";
+    var audio = new window.Audio(src);
+    audio.loop = true;
+    audio.preload = "none";
+
+    var btn = document.createElement("button");
+    btn.className = "music-toggle";
+    btn.type = "button";
+    btn.setAttribute("aria-pressed", "false");
+    btn.setAttribute("aria-label", isEn ? "Play background music" : "播放背景音乐");
+    btn.title = isEn ? "Play background music" : "播放背景音乐";
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>';
+
+    var themeBtn = document.getElementById("themeToggle");
+    if (themeBtn && themeBtn.parentNode === actions) {
+      actions.insertBefore(btn, themeBtn);
+    } else {
+      actions.appendChild(btn);
+    }
+
+    var toast = document.createElement("div");
+    toast.className = "site-toast";
+    document.body.appendChild(toast);
+    var toastTimer = null;
+
+    function showToast(text) {
+      toast.textContent = text;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        toast.classList.remove("show");
+      }, 2400);
+    }
+
+    function setPlaying(playing) {
+      btn.classList.toggle("is-playing", playing);
+      btn.setAttribute("aria-pressed", playing ? "true" : "false");
+      var label = playing
+        ? isEn
+          ? "Pause background music"
+          : "暂停背景音乐"
+        : isEn
+        ? "Play background music"
+        : "播放背景音乐";
+      btn.setAttribute("aria-label", label);
+      btn.title = label;
+    }
+
+    btn.addEventListener("click", function () {
+      if (audio.paused) {
+        var result = audio.play();
+        if (result && result.catch) {
+          result.catch(function () {
+            showToast(isEn ? "Music file not uploaded yet" : "音乐文件还未上传");
+            setPlaying(false);
+          });
+        }
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener("play", function () {
+      setPlaying(true);
+    });
+    audio.addEventListener("pause", function () {
+      setPlaying(false);
+    });
+  })();
 })();
