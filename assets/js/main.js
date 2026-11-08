@@ -423,7 +423,7 @@
     );
   })();
 
-  // 音乐播放器（在线列表 + U 盘本地文件）
+  // 音乐播放器（在线列表）
   (function () {
     var actions = document.querySelector(".nav-actions");
     if (!actions) return;
