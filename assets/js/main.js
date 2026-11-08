@@ -481,15 +481,8 @@
       ICONS.next +
       "</button></div>" +
       '<div class="music-list" data-list></div>' +
-      '<div class="music-add"><button class="music-add-btn" type="button" data-add-files>' +
-      (isEn ? "Add USB files" : "从 U 盘添加文件") +
-      '</button><button class="music-add-btn" type="button" data-add-folder>' +
-      (isEn ? "Add folder" : "添加文件夹") +
-      '</button><input type="file" accept="audio/*" multiple hidden data-file-input><input type="file" accept="audio/*" multiple webkitdirectory hidden data-folder-input></div>' +
       '<p class="music-hint">' +
-      (isEn
-        ? "Local files play in this tab only and are never uploaded."
-        : "在线列表由站点提供；本地文件只在本页播放，不会上传。") +
+      (isEn ? "Playlist provided by the site." : "在线列表由站点提供。") +
       "</p>";
     document.body.appendChild(panel);
 
@@ -519,11 +512,6 @@
     var progressFill = panel.querySelector(".music-progress-fill");
     var currentEl = panel.querySelector("[data-current]");
     var totalEl = panel.querySelector("[data-total]");
-    var fileInput = panel.querySelector("[data-file-input]");
-    var folderInput = panel.querySelector("[data-folder-input]");
-    var addFilesBtn = panel.querySelector("[data-add-files]");
-    var addFolderBtn = panel.querySelector("[data-add-folder]");
-
     var toast = document.createElement("div");
     toast.className = "site-toast";
     document.body.appendChild(toast);
@@ -722,48 +710,6 @@
       playTrack(index);
     }
 
-    function isAudioFile(file) {
-      return (
-        (file.type && file.type.indexOf("audio/") === 0) ||
-        /\.(mp3|wav|flac|m4a|aac|ogg|oga|opus|webm)$/i.test(file.name)
-      );
-    }
-
-    function handleFiles(input) {
-      var files = Array.prototype.slice.call(input.files || []);
-      input.value = "";
-      var audioFiles = files.filter(isAudioFile);
-      if (!audioFiles.length) {
-        showToast(isEn ? "No playable audio files" : "没有可播放的音频文件");
-        return;
-      }
-
-      var startIndex = tracks.length;
-      var newTracks = audioFiles.map(function (file) {
-        return {
-          title: file.name.replace(/\.([^.]+)$/, ""),
-          artist: isEn ? "Local file" : "本地文件",
-          src: URL.createObjectURL(file),
-          local: true
-        };
-      });
-      tracks = tracks.concat(newTracks);
-      if (audio) audio.loop = tracks.length === 1;
-      renderList();
-
-      if (currentIndex === -1) {
-        playTrack(startIndex);
-      } else {
-        showToast(
-          (isEn ? "Added " : "已添加 ") +
-            newTracks.length +
-            (isEn
-              ? " local track" + (newTracks.length > 1 ? "s" : "")
-              : " 首本地音乐")
-        );
-      }
-    }
-
     function openPanel() {
       if (isOpen) return;
       isOpen = true;
@@ -857,19 +803,6 @@
       percent = Math.max(0, Math.min(1, percent));
       audio.currentTime = percent * audio.duration;
       updateProgress();
-    });
-
-    addFilesBtn.addEventListener("click", function () {
-      fileInput.click();
-    });
-    addFolderBtn.addEventListener("click", function () {
-      folderInput.click();
-    });
-    fileInput.addEventListener("change", function () {
-      handleFiles(fileInput);
-    });
-    folderInput.addEventListener("change", function () {
-      handleFiles(folderInput);
     });
 
     document.addEventListener("click", function (event) {
