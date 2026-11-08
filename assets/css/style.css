@@ -2327,30 +2327,6 @@ body.modal-open {
   color: var(--faint);
 }
 
-.music-add {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.music-add-btn {
-  flex: 1;
-  height: 32px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface-2);
-  color: var(--muted);
-  font-size: 11.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.music-add-btn:hover {
-  color: var(--text);
-  border-color: var(--border-strong);
-}
-
 .music-hint {
   margin: 10px 0 0;
   font-size: 10.5px;
