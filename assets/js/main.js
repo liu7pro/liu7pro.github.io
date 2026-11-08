@@ -181,21 +181,57 @@
 
   loadLatestRelease();
 
-  // 主题切换
+  // 主题：默认跟随系统深/浅色，手动切换后记住选择
   var root = document.documentElement;
-  try {
-    var saved = localStorage.getItem("domeos-theme");
-    if (saved === "light" || saved === "dark") root.dataset.theme = saved;
-  } catch (e) {}
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  var lightQuery =
+    window.matchMedia && window.matchMedia("(prefers-color-scheme: light)");
+
+  function readThemeChoice() {
+    try {
+      var value = localStorage.getItem("domeos-theme-v2");
+      return value === "light" || value === "dark" ? value : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function systemTheme() {
+    return lightQuery && lightQuery.matches ? "light" : "dark";
+  }
+
+  function applyTheme(theme, persist) {
+    root.dataset.theme = theme;
+    if (themeMeta) {
+      themeMeta.setAttribute(
+        "content",
+        theme === "light" ? "#f7f8fa" : "#0a0b0f"
+      );
+    }
+    if (persist) {
+      try {
+        localStorage.setItem("domeos-theme-v2", theme);
+      } catch (e) {}
+    }
+  }
+
+  applyTheme(readThemeChoice() || systemTheme(), false);
+
+  if (lightQuery) {
+    var onSystemThemeChange = function () {
+      if (!readThemeChoice()) applyTheme(systemTheme(), false);
+    };
+    if (lightQuery.addEventListener) {
+      lightQuery.addEventListener("change", onSystemThemeChange);
+    } else if (lightQuery.addListener) {
+      lightQuery.addListener(onSystemThemeChange);
+    }
+  }
 
   var themeToggle = document.getElementById("themeToggle");
   if (themeToggle) {
     themeToggle.addEventListener("click", function () {
-      var next = root.dataset.theme === "light" ? "dark" : "light";
-      root.dataset.theme = next;
-      try {
-        localStorage.setItem("domeos-theme", next);
-      } catch (e) {}
+      applyTheme(root.dataset.theme === "light" ? "dark" : "light", true);
     });
   }
 
