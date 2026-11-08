@@ -23,7 +23,8 @@ window.DOMEOS_CONFIG = {
   music: {
     src: "/assets/audio/track-01.mp3",
     title: "《您好，真心已解锁》",
-    artist: "DomeOS Team",
+    artist: "DeepSeek",
+    album: "《你好，按条款关怀》",
     playlist: "/assets/audio/playlist.json"
   },
 };

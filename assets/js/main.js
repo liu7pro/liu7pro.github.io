@@ -469,6 +469,7 @@
     var defaultTrack = {
       title: musicCfg.title || "Moonlight",
       artist: musicCfg.artist || "DomeOS Team",
+      album: musicCfg.album || "",
       src: musicCfg.src || "/assets/audio/bgm.flac"
     };
     var tracks = [defaultTrack];
@@ -632,10 +633,14 @@
           : "0%";
     }
 
+    function artistLine(track) {
+      return track.artist + (track.album ? " · " + track.album : "");
+    }
+
     function updateNow() {
       if (currentIndex >= 0 && tracks[currentIndex]) {
         nowTitle.textContent = tracks[currentIndex].title;
-        nowArtist.textContent = tracks[currentIndex].artist;
+        nowArtist.textContent = artistLine(tracks[currentIndex]);
       } else {
         nowTitle.textContent = isEn ? "Nothing playing" : "未在播放";
         nowArtist.textContent = "DomeOS Team";
@@ -647,9 +652,7 @@
       if (!tracks.length) {
         var empty = document.createElement("div");
         empty.className = "music-empty";
-        empty.textContent = isEn
-          ? "No tracks yet. Add local files."
-          : "暂无音乐，请添加本地文件。";
+        empty.textContent = isEn ? "No tracks yet." : "暂无音乐。";
         listEl.appendChild(empty);
         return;
       }
@@ -674,7 +677,7 @@
 
         var artist = document.createElement("span");
         artist.className = "music-item-artist";
-        artist.textContent = track.artist;
+        artist.textContent = artistLine(track);
 
         text.appendChild(title);
         text.appendChild(artist);
@@ -784,6 +787,7 @@
               return {
                 title: item.title || (isEn ? "Untitled" : "未命名"),
                 artist: item.artist || "DomeOS Team",
+                album: item.album || "",
                 src: item.src
               };
             });
