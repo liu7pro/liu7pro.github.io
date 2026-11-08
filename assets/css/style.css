@@ -1218,8 +1218,18 @@ body::before {
   flex-direction: row-reverse;
 }
 
+.msg .avatar svg {
+  width: 14px;
+  height: 14px;
+}
+
 .msg.user .avatar {
-  background: var(--surface-2);
+  border-radius: 50%;
+  background: linear-gradient(
+    145deg,
+    rgba(46, 157, 244, 0.22),
+    rgba(124, 92, 255, 0.18)
+  );
   border: 1px solid var(--border);
   color: var(--muted);
 }
