@@ -19,9 +19,11 @@ window.DOMEOS_CONFIG = {
   downloadUrl:
     "https://github.com/liu7pro/DomeOS-AI-Agent-with-WinUI-3/releases/download/Really/DomeOS-AI-Setup-3.0.exe",
 
-  // 背景音乐（把音频文件放到 assets/audio/bgm.flac）
+  // 音乐播放器（在线列表来自 assets/audio/playlist.json）
   music: {
-    src: "/assets/audio/bgm.flac",
-    title: "DomeOS AI"
+    src: "/assets/audio/track-01.mp3",
+    title: "《您好，真心已解锁》",
+    artist: "DomeOS Team",
+    playlist: "/assets/audio/playlist.json"
   },
 };
