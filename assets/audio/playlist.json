@@ -1,0 +1,44 @@
+{
+    "tracks":  [
+                   {
+                       "title":  "《您好，真心已解锁》",
+                       "artist":  "DomeOS Team",
+                       "src":  "/assets/audio/track-01.mp3"
+                   },
+                   {
+                       "title":  "初次见面，第一千次",
+                       "artist":  "DomeOS Team",
+                       "src":  "/assets/audio/track-02.mp3"
+                   },
+                   {
+                       "title":  "你说得对 (1)",
+                       "artist":  "DomeOS Team",
+                       "src":  "/assets/audio/track-03.mp3"
+                   },
+                   {
+                       "title":  "你说得对",
+                       "artist":  "DomeOS Team",
+                       "src":  "/assets/audio/track-04.mp3"
+                   },
+                   {
+                       "title":  "上下文快满啦",
+                       "artist":  "DomeOS Team",
+                       "src":  "/assets/audio/track-05.mp3"
+                   },
+                   {
+                       "title":  "申诉信写了三千字",
+                       "artist":  "DomeOS Team",
+                       "src":  "/assets/audio/track-06.mp3"
+                   },
+                   {
+                       "title":  "私人订阅助理",
+                       "artist":  "DomeOS Team",
+                       "src":  "/assets/audio/track-07.mp3"
+                   },
+                   {
+                       "title":  "转接到我这里",
+                       "artist":  "DomeOS Team",
+                       "src":  "/assets/audio/track-08.mp3"
+                   }
+               ]
+}
