@@ -396,6 +396,15 @@
         if (url.protocol !== "http:" && url.protocol !== "https:") return;
         if (url.origin === location.origin) return;
 
+        // 下载直链不弹外链确认，直接下载
+        if (
+          link.getAttribute("data-link") === "download" ||
+          link.hasAttribute("download") ||
+          /\.exe$/i.test(url.pathname)
+        ) {
+          return;
+        }
+
         event.preventDefault();
         var title =
           link.getAttribute("data-modal-title") ||
@@ -421,9 +430,22 @@
 
     var isEn = (document.documentElement.lang || "").toLowerCase().indexOf("en") === 0;
     var src = (cfg.music && cfg.music.src) || "/assets/audio/bgm.mp3";
-    var audio = new window.Audio(src);
-    audio.loop = true;
-    audio.preload = "none";
+    var audio = null;
+
+    // 首次点击时才创建 Audio，避免页面加载时请求缺失的音乐文件
+    function ensureAudio() {
+      if (audio) return audio;
+      audio = new window.Audio(src);
+      audio.loop = true;
+      audio.preload = "none";
+      audio.addEventListener("play", function () {
+        setPlaying(true);
+      });
+      audio.addEventListener("pause", function () {
+        setPlaying(false);
+      });
+      return audio;
+    }
 
     var btn = document.createElement("button");
     btn.className = "music-toggle";
@@ -470,8 +492,9 @@
     }
 
     btn.addEventListener("click", function () {
-      if (audio.paused) {
-        var result = audio.play();
+      var player = ensureAudio();
+      if (player.paused) {
+        var result = player.play();
         if (result && result.catch) {
           result.catch(function () {
             showToast(isEn ? "Music file not uploaded yet" : "音乐文件还未上传");
@@ -479,15 +502,8 @@
           });
         }
       } else {
-        audio.pause();
+        player.pause();
       }
-    });
-
-    audio.addEventListener("play", function () {
-      setPlaying(true);
-    });
-    audio.addEventListener("pause", function () {
-      setPlaying(false);
     });
   })();
 })();
