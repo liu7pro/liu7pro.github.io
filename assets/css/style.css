@@ -538,6 +538,31 @@ section[id],
   background: transparent;
 }
 
+.nav-links a.nav-privacy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text);
+  border: 1px solid rgba(46, 157, 244, 0.28);
+  background: rgba(46, 157, 244, 0.09);
+}
+
+.nav-links a.nav-privacy svg {
+  width: 13px;
+  height: 13px;
+  color: var(--blue);
+}
+
+.nav-links a.nav-privacy:hover {
+  background: rgba(46, 157, 244, 0.18);
+  border-color: rgba(46, 157, 244, 0.45);
+}
+
+[data-theme="light"] .nav-links a.nav-privacy {
+  background: rgba(46, 157, 244, 0.08);
+  border-color: rgba(46, 157, 244, 0.22);
+}
+
 .nav-actions {
   margin-left: 2px;
   display: flex;
@@ -2034,6 +2059,13 @@ body::before {
   }
 
   .app-side {
+    display: none;
+  }
+}
+
+@media (max-width: 880px) {
+  .nav-version,
+  .nav-actions .btn-sm {
     display: none;
   }
 }
