@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DomeOS Music — 播放器</title>
+  <meta name="description" content="DomeOS Music：DomeOS Team 站点的独立音乐播放器。">
+  <meta name="theme-color" content="#0a0b0f">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="/assets/img/app.ico" sizes="any">
+  <link rel="icon" href="/assets/img/icon-32.png" type="image/png">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0b0f;
+      --surface: rgba(20, 23, 31, 0.72);
+      --surface-2: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.1);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      --text: #e9ebf2;
+      --muted: #9ba1b0;
+      --faint: #6b7180;
+      --blue: #2e9df4;
+      --font: "Segoe UI Variable Display", "Segoe UI", -apple-system,
+        BlinkMacSystemFont, "Microsoft YaHei UI", "PingFang SC", sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --bg: #f7f8fa;
+        --surface: rgba(255, 255, 255, 0.8);
+        --surface-2: rgba(16, 20, 38, 0.04);
+        --border: rgba(16, 20, 38, 0.1);
+        --border-strong: rgba(16, 20, 38, 0.2);
+        --text: #14161f;
+        --muted: #5d6274;
+        --faint: #8a8fa0;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .glow {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .glow span {
+      position: absolute;
+      width: 46vw;
+      height: 46vw;
+      max-width: 640px;
+      max-height: 640px;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.4;
+      animation: drift 28s ease-in-out infinite alternate;
+    }
+
+    .glow .a {
+      top: -12vw;
+      left: -6vw;
+      background: radial-gradient(circle, rgba(46, 157, 244, 0.5), transparent 66%);
+    }
+
+    .glow .b {
+      bottom: -16vw;
+      right: -10vw;
+      background: radial-gradient(circle, rgba(245, 200, 76, 0.26), transparent 66%);
+      animation-delay: -12s;
+    }
+
+    @keyframes drift {
+      to { transform: translate3d(4vw, 5vh, 0) scale(1.12); }
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: min(100% - 40px, 760px);
+      margin: 0 auto;
+      padding: 26px 0 10px;
+    }
+
+    .brand { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 650; }
+
+    .brand img { width: 22px; height: 22px; }
+
+    .top-link {
+      font-size: 12.5px;
+      color: var(--muted);
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .top-link:hover { color: var(--text); border-color: var(--border-strong); }
+
+    main {
+      flex: 1;
+      width: min(100% - 40px, 760px);
+      margin: 0 auto;
+      padding: 22px 0 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .player {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.8);
+    }
+
+    .cover {
+      position: relative;
+      flex: none;
+      width: 148px;
+      height: 148px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #2e9df4 0%, #1c6fd0 52%, #6b5cff 100%);
+      overflow: hidden;
+    }
+
+    .cover svg { width: 62px; height: 62px; color: #fff; opacity: 0.95; }
+
+    .cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.35), transparent 55%);
+      pointer-events: none;
+    }
+
+    .cover.spinning svg { animation: pulse 2.4s ease-in-out infinite; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    .info { flex: 1; min-width: 0; }
+
+    .now-title {
+      font-size: 19px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .now-artist {
+      margin-top: 5px;
+      font-size: 12.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .progress {
+      margin-top: 18px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .progress-fill {
+      display: block;
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), #6b5cff);
+      transition: width 0.1s linear;
+    }
+
+    .time {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 7px;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      color: var(--faint);
+    }
+
+    .controls { display: flex; align-items: center; gap: 14px; margin-top: 14px; }
+
+    .ctrl {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, transform 0.2s var(--ease);
+    }
+
+    .ctrl:hover { color: var(--text); border-color: var(--border-strong); transform: translateY(-1px); }
+
+    .ctrl svg { width: 15px; height: 15px; }
+
+    .ctrl.play {
+      width: 46px;
+      height: 46px;
+      background: var(--blue);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 12px 30px -12px rgba(46, 157, 244, 0.9);
+    }
+
+    .ctrl.play svg { width: 18px; height: 18px; }
+
+    .list-card {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      padding: 20px 12px 12px;
+    }
+
+    .list-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 0 10px 10px;
+    }
+
+    .list-head h1 { margin: 0; font-size: 14px; font-weight: 650; }
+
+    .list-head span { font-size: 11px; color: var(--faint); }
+
+    .track {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 11px;
+      background: none;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .track:hover { background: var(--surface-2); }
+
+    .track.active { background: rgba(46, 157, 244, 0.12); }
+
+    .track-index {
+      flex: none;
+      width: 22px;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      color: var(--faint);
+      text-align: center;
+    }
+
+    .track.active .track-index { color: var(--blue); }
+
+    .track-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .track-title {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-meta {
+      font-size: 11px;
+      color: var(--faint);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-eq { flex: none; display: none; align-items: flex-end; gap: 2px; height: 12px; }
+
+    .track.active .track-eq { display: flex; }
+
+    .track-eq i {
+      width: 2px;
+      height: 4px;
+      border-radius: 1px;
+      background: var(--blue);
+      animation: eq 0.9s ease-in-out infinite alternate;
+    }
+
+    .track-eq i:nth-child(2) { animation-delay: -0.3s; }
+
+    .track-eq i:nth-child(3) { animation-delay: -0.6s; }
+
+    @keyframes eq { to { height: 11px; } }
+
+    .site-footer { border-top: 1px solid var(--border); background: var(--surface); }
+
+    .footer-inner {
+      width: min(100% - 40px, 760px);
+      margin: 0 auto;
+      padding: 22px 0 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 20px;
+      font-size: 11.5px;
+      color: var(--faint);
+    }
+
+    .footer-inner a:hover { color: var(--text); }
+
+    .footer-links { display: flex; flex-wrap: wrap; gap: 16px; margin-left: auto; }
+
+    @media (max-width: 620px) {
+      .player { flex-direction: column; align-items: stretch; gap: 18px; padding: 20px; }
+      .cover { width: 100%; height: 180px; }
+      .footer-links { margin-left: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"><span class="a"></span><span class="b"></span></div>
+
+  <header class="top">
+    <a class="brand" href="/domeosai/">
+      <img src="/assets/img/logo.png" alt="" width="22" height="22">
+      DomeOS Music
+    </a>
+    <a class="top-link" href="/domeosai/">返回主站</a>
+  </header>
+
+  <main>
+    <section class="player" aria-label="正在播放">
+      <div class="cover" id="cover" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c.9 4.6 3.4 7.1 8 8-4.6.9-7.1 3.4-8 8-.9-4.6-3.4-7.1-8-8 4.6-.9 7.1-3.4 8-8z"/></svg>
+      </div>
+      <div class="info">
+        <div class="now-title" id="nowTitle">未在播放</div>
+        <div class="now-artist" id="nowArtist">DomeOS Team</div>
+        <div class="progress" id="progress" role="slider" tabindex="0" aria-label="播放进度">
+          <span class="progress-fill" id="progressFill"></span>
+        </div>
+        <div class="time"><span id="cur">0:00</span><span id="total">0:00</span></div>
+        <div class="controls">
+          <button class="ctrl" type="button" id="prev" aria-label="上一首">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+          </button>
+          <button class="ctrl play" type="button" id="play" aria-label="播放">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="ctrl" type="button" id="next" aria-label="下一首">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="list-card">
+      <div class="list-head">
+        <h1>播放列表</h1>
+        <span id="count"></span>
+      </div>
+      <div id="list"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 DomeOS Team · DomeOS Music</span>
+      <div class="footer-links">
+        <a href="/domeosai/">DomeOS AI</a>
+        <a href="/domeosai/about.html">关于团队</a>
+        <a href="/domeosai/legal.html">隐私与条款</a>
+        <a href="https://fireflyos.choling.cyou" target="_blank" rel="noopener">FireflyOS</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var base = "/domeosai/assets/audio/";
+      var TRACKS = [
+        { title: "《您好，真心已解锁》", artist: "DeepSeek", album: "《你好，按条款关怀》", file: "track-01.mp3" },
+        { title: "初次见面，第一千次", artist: "DeepSeek", album: "《你好，按条款关怀》", file: "track-02.mp3" },
+        { title: "你说得对", artist: "DeepSeek", album: "《你好，按条款关怀》", file: "track-04.mp3" },
+        { title: "上下文快满啦", artist: "Claude", album: "《对方正在输入...》", file: "track-05.mp3" },
+        { title: "申诉信写了三千字", artist: "Claude", album: "《对方正在输入...》", file: "track-06.mp3" },
+        { title: "私人订阅助理", artist: "Claude", album: "《对方正在输入...》", file: "track-07.mp3" },
+        { title: "转接到我这里", artist: "Claude", album: "《对方正在输入...》", file: "track-08.mp3" }
+      ];
+
+      var nowTitle = document.getElementById("nowTitle");
+      var nowArtist = document.getElementById("nowArtist");
+      var progress = document.getElementById("progress");
+      var progressFill = document.getElementById("progressFill");
+      var curEl = document.getElementById("cur");
+      var totalEl = document.getElementById("total");
+      var playBtn = document.getElementById("play");
+      var prevBtn = document.getElementById("prev");
+      var nextBtn = document.getElementById("next");
+      var listEl = document.getElementById("list");
+      var countEl = document.getElementById("count");
+      var cover = document.getElementById("cover");
+
+      var ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+      var ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+      var audio = new Audio();
+      audio.preload = "metadata";
+      var index = -1;
+
+      function format(value) {
+        if (!isFinite(value) || value < 0) return "0:00";
+        var total = Math.floor(value);
+        var m = Math.floor(total / 60);
+        var s = total % 60;
+        return m + ":" + (s < 10 ? "0" : "") + s;
+      }
+
+      function meta(t) {
+        return t.artist + (t.album ? " · " + t.album : "");
+      }
+
+      function renderList() {
+        countEl.textContent = TRACKS.length + " 首";
+        listEl.innerHTML = "";
+        TRACKS.forEach(function (track, i) {
+          var item = document.createElement("button");
+          item.type = "button";
+          item.className = "track" + (i === index ? " active" : "");
+
+          var no = document.createElement("span");
+          no.className = "track-index";
+          no.textContent = i + 1 < 10 ? "0" + (i + 1) : String(i + 1);
+
+          var body = document.createElement("span");
+          body.className = "track-body";
+          var title = document.createElement("span");
+          title.className = "track-title";
+          title.textContent = track.title;
+          var sub = document.createElement("span");
+          sub.className = "track-meta";
+          sub.textContent = meta(track);
+          body.appendChild(title);
+          body.appendChild(sub);
+
+          var eq = document.createElement("span");
+          eq.className = "track-eq";
+          eq.innerHTML = "<i></i><i></i><i></i>";
+
+          item.appendChild(no);
+          item.appendChild(body);
+          item.appendChild(eq);
+          item.addEventListener("click", function () {
+            if (i === index) {
+              toggle();
+            } else {
+              play(i);
+            }
+          });
+          listEl.appendChild(item);
+        });
+      }
+
+      function updateNow() {
+        if (index < 0) {
+          nowTitle.textContent = "未在播放";
+          nowArtist.textContent = "DomeOS Team";
+          return;
+        }
+        var t = TRACKS[index];
+        nowTitle.textContent = t.title;
+        nowArtist.textContent = meta(t);
+      }
+
+      function updateProgress() {
+        curEl.textContent = format(audio.currentTime);
+        totalEl.textContent = format(audio.duration);
+        progressFill.style.width =
+          isFinite(audio.duration) && audio.duration > 0
+            ? (audio.currentTime / audio.duration) * 100 + "%"
+            : "0%";
+      }
+
+      function setPlaying(value) {
+        playBtn.innerHTML = value ? ICON_PAUSE : ICON_PLAY;
+        playBtn.setAttribute("aria-label", value ? "暂停" : "播放");
+        cover.classList.toggle("spinning", value);
+      }
+
+      function play(i) {
+        index = i;
+        var t = TRACKS[i];
+        audio.src = base + t.file;
+        audio.load();
+        updateNow();
+        renderList();
+        progressFill.style.width = "0%";
+        curEl.textContent = "0:00";
+        totalEl.textContent = "0:00";
+        var p = audio.play();
+        if (p && p.catch) {
+          p.catch(function () {
+            setPlaying(false);
+          });
+        }
+      }
+
+      function toggle() {
+        if (index < 0) {
+          play(0);
+          return;
+        }
+        if (audio.paused) {
+          var p = audio.play();
+          if (p && p.catch) p.catch(function () {});
+        } else {
+          audio.pause();
+        }
+      }
+
+      function step(delta) {
+        if (!TRACKS.length) return;
+        if (index < 0) {
+          play(0);
+          return;
+        }
+        play((index + delta + TRACKS.length) % TRACKS.length);
+      }
+
+      audio.addEventListener("play", function () {
+        setPlaying(true);
+      });
+      audio.addEventListener("pause", function () {
+        setPlaying(false);
+      });
+      audio.addEventListener("timeupdate", updateProgress);
+      audio.addEventListener("loadedmetadata", updateProgress);
+      audio.addEventListener("ended", function () {
+        step(1);
+      });
+
+      playBtn.addEventListener("click", toggle);
+      prevBtn.addEventListener("click", function () {
+        step(-1);
+      });
+      nextBtn.addEventListener("click", function () {
+        step(1);
+      });
+
+      progress.addEventListener("click", function (event) {
+        if (!isFinite(audio.duration) || audio.duration <= 0) return;
+        var rect = progress.getBoundingClientRect();
+        var ratio = (event.clientX - rect.left) / rect.width;
+        audio.currentTime = Math.max(0, Math.min(1, ratio)) * audio.duration;
+      });
+
+      renderList();
+      updateNow();
+    })();
+  </script>
+</body>
+</html>
