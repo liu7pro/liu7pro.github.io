@@ -18,13 +18,4 @@ window.DOMEOS_CONFIG = {
   // 安装包直链（留空则跳转到 Releases 页面）
   downloadUrl:
     "https://github.com/liu7pro/DomeOS-AI-Agent-with-WinUI-3/releases/download/Really/DomeOS-AI-Setup-3.0.exe",
-
-  // 音乐播放器（在线列表来自 assets/audio/playlist.json）
-  music: {
-    src: "/assets/audio/track-01.mp3",
-    title: "《您好，真心已解锁》",
-    artist: "DeepSeek",
-    album: "《你好，按条款关怀》",
-    playlist: "/assets/audio/playlist.json"
-  },
 };
