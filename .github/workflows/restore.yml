@@ -1,6 +1,9 @@
 name: Revert restructure
 
 on:
+  push:
+    paths:
+      - ".github/workflows/restore.yml"
   workflow_dispatch:
 
 permissions:
