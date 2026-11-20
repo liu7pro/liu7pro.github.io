@@ -485,3 +485,4 @@
       actions.appendChild(link);
     }
   })();
+})();

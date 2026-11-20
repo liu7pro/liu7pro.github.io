@@ -2584,6 +2584,10 @@ body.modal-open {
     margin-left: 0;
   }
 
+  .footer-legal {
+    margin-left: 0;
+  }
+
   .docs {
     grid-template-columns: 1fr;
     gap: 20px;
