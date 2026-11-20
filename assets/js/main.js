@@ -459,30 +459,409 @@
     );
   })();
 
-  // 音乐入口：跳转到独立的播放器页面
+  // 音乐播放器（在线列表）
   (function () {
     var actions = document.querySelector(".nav-actions");
     if (!actions) return;
 
-    var isEn =
-      (document.documentElement.lang || "").toLowerCase().indexOf("en") === 0;
+    var isEn = (document.documentElement.lang || "").toLowerCase().indexOf("en") === 0;
+    var musicCfg = cfg.music || {};
+    var defaultTrack = {
+      title: musicCfg.title || "Moonlight",
+      artist: musicCfg.artist || "DomeOS Team",
+      album: musicCfg.album || "",
+      src: musicCfg.src || "/assets/audio/bgm.flac"
+    };
+    var tracks = [defaultTrack];
+    var currentIndex = -1;
+    var audio = null;
+    var isOpen = false;
 
-    var link = document.createElement("a");
-    link.className = "music-toggle";
-    link.href = "/music/";
-    link.setAttribute(
-      "aria-label",
-      isEn ? "Open music player" : "打开音乐播放器"
-    );
-    link.title = isEn ? "Open music player" : "打开音乐播放器";
-    link.innerHTML =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>';
+    var ICONS = {
+      play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+      pause: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>',
+      prev: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>',
+      next: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>',
+      note: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>'
+    };
+
+    var panel = document.createElement("div");
+    panel.className = "music-panel";
+    panel.setAttribute("aria-hidden", "true");
+    panel.innerHTML =
+      '<div class="music-panel-head"><span class="music-panel-heading">' +
+      (isEn ? "Music player" : "音乐播放器") +
+      '</span><button class="music-close" type="button" aria-label="' +
+      (isEn ? "Close" : "关闭") +
+      '">×</button></div>' +
+      '<div class="music-now"><div class="music-now-title">' +
+      (isEn ? "Nothing playing" : "未在播放") +
+      '</div><div class="music-now-artist">DomeOS Team</div></div>' +
+      '<div class="music-progress" role="slider" tabindex="0" aria-label="' +
+      (isEn ? "Playback progress" : "播放进度") +
+      '"><span class="music-progress-fill"></span></div>' +
+      '<div class="music-time"><span data-current>00:00</span><span data-total>00:00</span></div>' +
+      '<div class="music-controls">' +
+      '<button class="music-ctrl" type="button" data-prev aria-label="' +
+      (isEn ? "Previous" : "上一首") +
+      '">' +
+      ICONS.prev +
+      "</button>" +
+      '<button class="music-ctrl music-play" type="button" data-play aria-label="' +
+      (isEn ? "Play" : "播放") +
+      '">' +
+      ICONS.play +
+      "</button>" +
+      '<button class="music-ctrl" type="button" data-next aria-label="' +
+      (isEn ? "Next" : "下一首") +
+      '">' +
+      ICONS.next +
+      "</button></div>" +
+      '<div class="music-list" data-list></div>' +
+      '<p class="music-hint">' +
+      (isEn ? "Playlist provided by the site." : "在线列表由站点提供。") +
+      "</p>";
+    document.body.appendChild(panel);
+
+    var btn = document.createElement("button");
+    btn.className = "music-toggle";
+    btn.type = "button";
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-label", isEn ? "Open music player" : "打开音乐播放器");
+    btn.title = isEn ? "Open music player" : "打开音乐播放器";
+    btn.innerHTML = ICONS.note;
 
     var themeBtn = document.getElementById("themeToggle");
     if (themeBtn && themeBtn.parentNode === actions) {
-      actions.insertBefore(link, themeBtn);
+      actions.insertBefore(btn, themeBtn);
     } else {
-      actions.appendChild(link);
+      actions.appendChild(btn);
     }
+
+    var listEl = panel.querySelector("[data-list]");
+    var nowTitle = panel.querySelector(".music-now-title");
+    var nowArtist = panel.querySelector(".music-now-artist");
+    var playBtn = panel.querySelector("[data-play]");
+    var prevBtn = panel.querySelector("[data-prev]");
+    var nextBtn = panel.querySelector("[data-next]");
+    var closeBtn = panel.querySelector(".music-close");
+    var progressEl = panel.querySelector(".music-progress");
+    var progressFill = panel.querySelector(".music-progress-fill");
+    var currentEl = panel.querySelector("[data-current]");
+    var totalEl = panel.querySelector("[data-total]");
+    var toast = document.createElement("div");
+    toast.className = "site-toast";
+    document.body.appendChild(toast);
+    var toastTimer = null;
+
+    function showToast(text) {
+      toast.textContent = text;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        toast.classList.remove("show");
+      }, 2400);
+    }
+
+    function ensureAudio() {
+      if (audio) return audio;
+      audio = new window.Audio();
+      audio.preload = "none";
+      audio.addEventListener("play", function () {
+        setPlaying(true);
+      });
+      audio.addEventListener("pause", function () {
+        setPlaying(false);
+      });
+      audio.addEventListener("timeupdate", updateProgress);
+      audio.addEventListener("loadedmetadata", updateProgress);
+      audio.addEventListener("ended", function () {
+        if (tracks.length > 1) {
+          next(1);
+        } else if (audio) {
+          audio.currentTime = 0;
+          var result = audio.play();
+          if (result && result.catch) result.catch(function () {});
+        }
+      });
+      return audio;
+    }
+
+    function setPlaying(playing) {
+      btn.classList.toggle("is-playing", playing);
+      btn.setAttribute(
+        "aria-label",
+        playing
+          ? isEn
+            ? "Music playing"
+            : "音乐播放中"
+          : isEn
+          ? "Open music player"
+          : "打开音乐播放器"
+      );
+      btn.title = playing
+        ? isEn
+          ? "Music playing"
+          : "音乐播放中"
+        : isEn
+        ? "Open music player"
+        : "打开音乐播放器";
+      playBtn.innerHTML = playing ? ICONS.pause : ICONS.play;
+      playBtn.setAttribute(
+        "aria-label",
+        playing ? (isEn ? "Pause" : "暂停") : isEn ? "Play" : "播放"
+      );
+    }
+
+    function formatTime(value) {
+      if (!isFinite(value) || value < 0) return "00:00";
+      var total = Math.floor(value);
+      var m = Math.floor(total / 60);
+      var s = total % 60;
+      return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+    }
+
+    function updateProgress() {
+      if (!audio) return;
+      currentEl.textContent = formatTime(audio.currentTime);
+      totalEl.textContent = isFinite(audio.duration)
+        ? formatTime(audio.duration)
+        : "00:00";
+      progressFill.style.width =
+        isFinite(audio.duration) && audio.duration > 0
+          ? (audio.currentTime / audio.duration) * 100 + "%"
+          : "0%";
+    }
+
+    function artistLine(track) {
+      return track.artist + (track.album ? " · " + track.album : "");
+    }
+
+    function updateNow() {
+      if (currentIndex >= 0 && tracks[currentIndex]) {
+        nowTitle.textContent = tracks[currentIndex].title;
+        nowArtist.textContent = artistLine(tracks[currentIndex]);
+      } else {
+        nowTitle.textContent = isEn ? "Nothing playing" : "未在播放";
+        nowArtist.textContent = "DomeOS Team";
+      }
+    }
+
+    function renderList() {
+      listEl.innerHTML = "";
+      if (!tracks.length) {
+        var empty = document.createElement("div");
+        empty.className = "music-empty";
+        empty.textContent = isEn ? "No tracks yet." : "暂无音乐。";
+        listEl.appendChild(empty);
+        return;
+      }
+
+      tracks.forEach(function (track, index) {
+        var item = document.createElement("button");
+        item.type = "button";
+        item.className = "music-item" + (index === currentIndex ? " active" : "");
+        if (index === currentIndex) item.setAttribute("aria-current", "true");
+        item.title = track.title;
+
+        var note = document.createElement("span");
+        note.className = "music-item-note";
+        note.textContent = "♪";
+
+        var text = document.createElement("span");
+        text.className = "music-item-text";
+
+        var title = document.createElement("span");
+        title.className = "music-item-title";
+        title.textContent = track.title;
+
+        var artist = document.createElement("span");
+        artist.className = "music-item-artist";
+        artist.textContent = artistLine(track);
+
+        text.appendChild(title);
+        text.appendChild(artist);
+        item.appendChild(note);
+        item.appendChild(text);
+        item.addEventListener("click", function () {
+          if (index === currentIndex) {
+            togglePlay();
+          } else {
+            playTrack(index);
+          }
+        });
+        listEl.appendChild(item);
+      });
+    }
+
+    function playTrack(index) {
+      if (index < 0 || index >= tracks.length) return;
+      currentIndex = index;
+      var track = tracks[index];
+      var player = ensureAudio();
+      player.src = track.src;
+      player.load();
+      player.loop = tracks.length === 1;
+      currentEl.textContent = "00:00";
+      totalEl.textContent = "00:00";
+      progressFill.style.width = "0%";
+      updateNow();
+      renderList();
+      var result = player.play();
+      if (result && result.catch) {
+        result.catch(function () {
+          showToast(isEn ? "Unable to play this audio" : "无法播放该音频");
+          setPlaying(false);
+        });
+      }
+    }
+
+    function togglePlay() {
+      if (!tracks.length) {
+        showToast(isEn ? "No playable audio files" : "没有可播放的音频文件");
+        return;
+      }
+      if (currentIndex === -1) {
+        playTrack(0);
+        return;
+      }
+      var player = ensureAudio();
+      if (player.paused) {
+        var result = player.play();
+        if (result && result.catch) {
+          result.catch(function () {
+            showToast(isEn ? "Unable to play this audio" : "无法播放该音频");
+            setPlaying(false);
+          });
+        }
+      } else {
+        player.pause();
+      }
+    }
+
+    function next(delta) {
+      if (!tracks.length) return;
+      if (currentIndex === -1) {
+        playTrack(0);
+        return;
+      }
+      var index = (currentIndex + delta + tracks.length) % tracks.length;
+      playTrack(index);
+    }
+
+    function openPanel() {
+      if (isOpen) return;
+      isOpen = true;
+      panel.classList.add("show");
+      panel.setAttribute("aria-hidden", "false");
+      btn.setAttribute("aria-expanded", "true");
+      renderList();
+    }
+
+    function closePanel() {
+      if (!isOpen) return;
+      isOpen = false;
+      panel.classList.remove("show");
+      panel.setAttribute("aria-hidden", "true");
+      btn.setAttribute("aria-expanded", "false");
+    }
+
+    function loadPlaylist() {
+      if (!("fetch" in window)) {
+        renderList();
+        return;
+      }
+      var url = musicCfg.playlist || "/assets/audio/playlist.json";
+      fetch(url + "?v=" + Date.now(), { cache: "no-store" })
+        .then(function (response) {
+          if (!response.ok) throw new Error("HTTP " + response.status);
+          return response.json();
+        })
+        .then(function (data) {
+          var list = (data && data.tracks) || [];
+          var loaded = list
+            .filter(function (item) {
+              return item && item.src;
+            })
+            .map(function (item) {
+              return {
+                title: item.title || (isEn ? "Untitled" : "未命名"),
+                artist: item.artist || "DomeOS Team",
+                album: item.album || "",
+                src: item.src
+              };
+            });
+
+          if (!loaded.length) loaded = [defaultTrack];
+
+          var currentTrack =
+            currentIndex >= 0 ? tracks[currentIndex] : null;
+          tracks = loaded.concat(
+            tracks.filter(function (track) {
+              return track.local;
+            })
+          );
+          if (audio) audio.loop = tracks.length === 1;
+
+          if (currentTrack) {
+            currentIndex = -1;
+            for (var i = 0; i < tracks.length; i++) {
+              if (tracks[i].src === currentTrack.src) {
+                currentIndex = i;
+                break;
+              }
+            }
+          }
+
+          renderList();
+          if (currentIndex >= 0) updateNow();
+        })
+        .catch(function () {
+          renderList();
+        });
+    }
+
+    btn.addEventListener("click", function (event) {
+      event.stopPropagation();
+      if (isOpen) closePanel();
+      else openPanel();
+    });
+
+    closeBtn.addEventListener("click", closePanel);
+    playBtn.addEventListener("click", togglePlay);
+    prevBtn.addEventListener("click", function () {
+      next(-1);
+    });
+    nextBtn.addEventListener("click", function () {
+      next(1);
+    });
+
+    progressEl.addEventListener("click", function (event) {
+      if (!audio || !isFinite(audio.duration) || audio.duration <= 0) return;
+      var rect = progressEl.getBoundingClientRect();
+      var percent = (event.clientX - rect.left) / rect.width;
+      percent = Math.max(0, Math.min(1, percent));
+      audio.currentTime = percent * audio.duration;
+      updateProgress();
+    });
+
+    document.addEventListener("click", function (event) {
+      if (
+        isOpen &&
+        !panel.contains(event.target) &&
+        !btn.contains(event.target)
+      ) {
+        closePanel();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && isOpen) closePanel();
+    });
+
+    setPlaying(false);
+    renderList();
+    updateNow();
+    loadPlaylist();
   })();
 })();
