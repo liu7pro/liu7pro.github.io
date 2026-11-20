@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DomeOS AI — 为 Windows 打造的原生 AI 助手</title>
   <meta name="description" content="DomeOS AI 是 AI Agent 的 Windows 原生客户端，界面基于 WinUI 3 与 Windows App SDK 重写，启动快、占用低，支持流式对话、工具调用可视化与多会话管理。">
-  <meta name="theme-color" content="#0a0b0f">
+  <meta name="theme-color" content="#000000">
   <meta name="color-scheme" content="dark light">
   <meta property="og:type" content="website">
   <meta property="og:title" content="DomeOS AI — 为 Windows 打造的原生 AI 助手">
@@ -17,17 +17,17 @@
   <link rel="icon" href="assets/img/icon-32.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/img/logo.png">
   <style>
-    html { background: #0a0b0f; color-scheme: dark; }
-    html[data-theme="light"] { background: #f7f8fa; color-scheme: light; }
+    html { background: #000; color-scheme: dark; }
+    html[data-theme="light"] { background: #fff; color-scheme: light; }
     .page-curtain {
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: #0a0b0f;
+      background: #000;
       pointer-events: none;
       animation: curtain-out 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards;
     }
-    html[data-theme="light"] .page-curtain { background: #f7f8fa; }
+    html[data-theme="light"] .page-curtain { background: #fff; }
     @keyframes curtain-out { to { opacity: 0; visibility: hidden; } }
     @media (prefers-reduced-motion: reduce) { .page-curtain { display: none; } }
   </style>
@@ -47,8 +47,9 @@
     })();
   </script>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/home.css">
 </head>
-<body>
+<body class="home">
 
   <div class="page-curtain" aria-hidden="true"></div>
 
@@ -62,23 +63,22 @@
   <div class="cursor-glow" aria-hidden="true"></div>
 
   <header class="site-header" id="header">
-    <div class="container nav glass">
+    <nav class="nav glass" aria-label="主导航">
       <a class="brand" href="index.html" aria-label="DomeOS AI 首页">
         <img class="mark" src="assets/img/logo.png" alt="">
         <span>DomeOS AI</span>
-        <span class="nav-version">v2.0</span>
       </a>
-      <span class="nav-divider" aria-hidden="true"></span>
       <nav class="nav-links" id="navLinks">
         <span class="nav-hover" aria-hidden="true"></span>
+        <a href="#release">版本</a>
         <a href="#features">功能</a>
         <a href="guide.html">使用指南</a>
         <a href="download.html">下载</a>
+        <a href="about.html">关于</a>
         <a class="nav-privacy" href="legal.html" aria-label="用户协议与隐私政策">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 4.5-3.4 8.6-8 9.5C7.4 20.6 4 16.5 4 12V7l8-4z"/><path d="m9 12 2 2 4-4"/></svg>
           隐私
         </a>
-        <a href="#" data-link="github" target="_blank" rel="noopener">GitHub</a>
       </nav>
       <div class="nav-actions">
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换明暗主题">
@@ -89,197 +89,129 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3.5 12h17M12 3c2.4 3 2.4 15 0 18M12 3c-2.4 3-2.4 15 0 18"/></svg>
           EN
         </a>
-        <a class="btn btn-primary btn-sm" href="download.html">下载</a>
+        <a class="pill pill-nav" href="#" data-link="download">下载</a>
         <button class="menu-toggle" id="menuToggle" type="button" aria-label="打开菜单" aria-expanded="false">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
       </div>
-    </div>
+    </nav>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container">
-        <div class="hero-icon-wrap">
-          <span class="hero-ring" aria-hidden="true"></span>
-          <div class="hero-icon glass">
-            <img src="assets/img/logo.png" alt="DomeOS AI 图标">
-          </div>
-        </div>
-
-        <div class="hero-badges">
-          <span>WinUI 3</span>
-          <span>.NET 9</span>
-          <span>Windows 10 / 11</span>
-        </div>
-
+    <section class="hero-m">
+      <div class="inner">
         <h1>DomeOS AI</h1>
-        <p class="lead">
-          AI Agent 的 Windows 原生客户端。界面层用 WinUI 3 重写，
+        <p class="sub">为 Windows 打造的原生 AI 助手</p>
+        <p class="desc">
+          AI Agent 的 Windows 原生客户端，界面层用 WinUI 3 与 Windows App SDK 重写。
           双击即开，后台常驻只占几十 MB。
         </p>
-
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#" data-link="download">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-            下载 <span data-version>v2.0</span>
-          </a>
-          <a class="btn btn-ghost" href="guide.html">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            使用指南
-          </a>
-          <a class="btn btn-ghost" href="#" data-link="github" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.005 10.695.19-.32.305-.706.305-1.09 0-.54-.02-1.163-.02-1.77 0-1.22-1.31-1.67-1.31-2.01 0-.51 1.02-.12 1.99-.14 3.17-1.23 4.43 1.21 5.1-.58 2.3-1.12 1.58 0 0-.05 2.35-2.67 3.01-1.35-.01-1.95 0-1.95 0 0-.05 1.66-2.97 3.01 3.76-2.44 4.72-12-4.82-12-4.82 0 0-3.24 3.2-7.09 2.55 6.27-2.44 3.47-.05 1.66-2.97 3.01 2.09-.05 1.66-2.97 3.01 0 0 .05 2.35 2.67 3.01 1.22 1.21 1.87 1.44 4.5-.58 2.3-1.12 2.55-3.57 2.09-3.87 0 0 .05 1.66 2.97 3.01-.02.54-.02 1.06-.02 1.62 0 .38.15.78.36 1.08A12.02 12.02 0 0 0 24 12c0-6.627-5.373-12-12-12z"/></svg>
-            GitHub
-          </a>
+        <div class="actions">
+          <a class="pill pill-solid" href="#" data-link="download">下载 Windows 版</a>
+          <a class="pill" href="guide.html">查看使用指南</a>
         </div>
-
-        <p class="hero-note">
-          <span data-version>v2.0</span> “<span data-codename>Darling</span>” · <span data-release-date>2026-10-30</span> · x64 · <span data-file-size>约 526 MB</span>
-          ·
+        <p class="meta">
+          <span data-version>v3.0</span> “<span data-codename>Really</span>” ·
+          <span data-release-date>2026-11-07</span> · x64 ·
+          <span data-file-size>约 528 MB</span> ·
           <a href="#" data-link="releases" target="_blank" rel="noopener">历史版本</a>
         </p>
-
-        <div class="mockup-wrap reveal">
-          <div class="mockup" role="img" aria-label="DomeOS AI 客户端界面示意">
-            <div class="titlebar">
-              <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
-              <span class="title">DomeOS AI</span>
-              <div class="win-controls" aria-hidden="true"><span></span><span></span><span class="x"></span></div>
-            </div>
-            <div class="app-body">
-              <aside class="app-side">
-                <div class="side-search">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-                  搜索会话
-                </div>
-                <div>
-                  <div class="side-label">最近</div>
-                  <div class="side-item active"><span class="ico"></span>整理周报与下周计划<span class="meta">12:40</span></div>
-                  <div class="side-item"><span class="ico"></span>解释这段 PowerShell<span class="meta">10:15</span></div>
-                  <div class="side-item"><span class="ico"></span>查找会议结论<span class="meta">09:02</span></div>
-                </div>
-                <div>
-                  <div class="side-label">工具</div>
-                  <div class="side-item"><span class="ico"></span>文件读写</div>
-                  <div class="side-item"><span class="ico"></span>命令执行</div>
-                </div>
-              </aside>
-              <div class="app-main">
-                <div class="app-top">
-                  <span class="pill"><i></i>默认模型</span>
-                  <span class="pill">工具调用已开启</span>
-                  <div class="spacer">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h6"/></svg>
-                  </div>
-                </div>
-                <div class="chat">
-                  <div class="msg user">
-                    <div class="avatar avatar-user" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 19.5c1.2-3.6 3.7-5.3 6.5-5.3s5.3 1.7 6.5 5.3"/></svg>
-                    </div>
-                    <div class="bubble">帮我把这份周报整理成要点，再列一个下周计划。</div>
-                  </div>
-                  <div class="msg">
-                    <img class="avatar avatar-ai" src="assets/img/logo.png" alt="">
-                    <div class="bubble">
-                      已读取 <b>周报.docx</b>，共 3 个工作项。<br>
-                      <b>本周要点</b><br>
-                      · 完成登录流程重构，异常率降至 0.4%<br>
-                      · 界面走查完成，遗留 3 个交互问题<br>
-                      <b>下周计划</b><br>
-                      · 修复遗留问题并回归测试<br>
-                      · 推进离线缓存方案评审
-                    </div>
-                  </div>
-                  <div class="msg">
-                    <img class="avatar avatar-ai" src="assets/img/logo.png" alt="">
-                    <div class="bubble"><span class="typing"><i></i><i></i><i></i></span></div>
-                  </div>
-                </div>
-                <div class="composer">
-                  <span class="hint">输入消息，或按全局快捷键唤起…</span>
-                  <span class="send" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14-7-4 14-3-6-7-1z"/></svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
-    <section id="features">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">功能特性</span>
-          <h2>原生界面，轻量运行</h2>
-          <p>界面层基于 WinUI 3 与 Windows App SDK 重写，启动、内存与交互都按 Windows 的方式工作。</p>
+    <section class="m-section" id="release">
+      <div class="inner">
+        <div class="m-head">
+          <h2>最新版本</h2>
+          <p>版本信息自动同步自 GitHub Releases。</p>
+          <a class="m-link" href="#" data-link="releases" target="_blank" rel="noopener">查看全部版本</a>
         </div>
-
-        <div class="feature-groups">
-          <div class="feature-group reveal">
-            <div>
-              <h3>原生 Windows 体验</h3>
-              <p class="group-desc">用原生 XAML 替换 Web 渲染管线，窗口、控件与输入都是系统原生的。</p>
-            </div>
-            <ul class="feature-list">
-              <li><b>Mica / Acrylic 材质</b><span>与 Windows 11 视觉语言融合，窗口背景跟随桌面。</span></li>
-              <li><b>跟随系统主题</b><span>亮色、暗色与强调色实时切换，无需手动设置。</span></li>
-              <li><b>原生控件与输入</b><span>右键菜单、拖放、触控板手势与 IME 输入全部原生。</span></li>
-              <li><b>高 DPI 与多显示器</b><span>不同缩放比例下依然清晰锐利。</span></li>
-              <li><b>无障碍支持</b><span>Narrator、键盘全导航与 UI Automation 完整接入。</span></li>
-            </ul>
+        <div class="m-release">
+          <div class="m-release-card">
+            <span class="eyebrow">Current release</span>
+            <div class="ver" data-version>v3.0</div>
+            <div class="code" data-codename>Really</div>
+            <div class="date" data-release-date>2026-11-07</div>
+            <a class="pill pill-solid" href="#" data-link="download">下载安装包</a>
           </div>
-
-          <div class="feature-group reveal">
-            <div>
-              <h3>轻量、可迁移</h3>
-              <p class="group-desc">没有安装程序，没有 MSIX，没有证书。应用和数据都在你能看见的地方。</p>
-            </div>
-            <ul class="feature-list">
-              <li><b>单文件分发</b><span>下载一个 EXE，放在哪里都能运行。</span></li>
-              <li><b>数据自持</b><span>配置与会话存放于 <code>%LOCALAPPDATA%\DomeOS</code>，可随文件夹整体迁移。</span></li>
-              <li><b>干净卸载</b><span>删除文件夹即完成卸载，不留残余。</span></li>
-              <li><b>覆盖式升级</b><span>新版本覆盖旧文件，数据与配置不动。</span></li>
-            </ul>
-          </div>
-
-          <div class="feature-group reveal">
-            <div>
-              <h3>完整的 Agent 能力</h3>
-              <p class="group-desc">不只是聊天窗口。会话、工具调用与代码渲染都在桌面端完成。</p>
-            </div>
-            <ul class="feature-list">
-              <li><b>流式对话</b><span>逐 token 渲染，长回复滚动依旧流畅。</span></li>
-              <li><b>多会话管理</b><span>历史、重命名、搜索与归档。</span></li>
-              <li><b>工具调用可视化</b><span>结构化展示 Agent 的每一步思考与调用。</span></li>
-              <li><b>代码块高亮</b><span>原生渲染，一键复制。</span></li>
-              <li><b>Markdown / 数学公式</b><span>完整渲染支持，排版清晰。</span></li>
-              <li><b>托盘常驻</b><span>全局快捷键唤起，随时呼出侧边栏。</span></li>
+          <div class="m-notes">
+            <h3>更新要点</h3>
+            <ul data-release-notes>
+              <li>默认模型与工具调用链路更新</li>
+              <li>优化长对话下的内存占用</li>
+              <li>修复若干界面细节问题</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="cta">
-      <div class="container">
-        <div class="cta-inner glass reveal">
-          <img src="assets/img/logo.png" alt="">
-          <div class="cta-text">
-            <h2>下载 DomeOS AI</h2>
-            <p><span data-version>v2.0</span> “<span data-codename>Darling</span>” · Windows 10 1809 及以上 · x64</p>
+    <section class="m-section" id="features">
+      <div class="inner">
+        <div class="m-head">
+          <h2>核心能力</h2>
+          <p>不只是聊天窗口。会话、工具调用与代码渲染都在桌面端完成。</p>
+        </div>
+        <div class="m-grid">
+          <div class="m-card">
+            <h3>原生 WinUI 3</h3>
+            <p>界面层用原生 XAML 重写，窗口、控件与输入都是系统原生，与 Windows 11 视觉语言一致。</p>
           </div>
-          <div class="cta-actions">
-            <a class="btn btn-primary" href="#" data-link="download">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-              下载安装包
-            </a>
-            <a class="btn btn-ghost" href="guide.html">查看指南</a>
+          <div class="m-card">
+            <h3>MCP 工具调用</h3>
+            <p>文件读写、命令执行等工具调用过程可视化，结果直接回填到对话里。</p>
+          </div>
+          <div class="m-card">
+            <h3>流式对话</h3>
+            <p>逐字输出、随时中断，长回答也能边生成边阅读，不用等待整段返回。</p>
+          </div>
+          <div class="m-card">
+            <h3>低占用常驻</h3>
+            <p>关闭窗口后驻留托盘，全局快捷键随时唤起，多会话切换不丢上下文。</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="m-section" id="details">
+      <div class="inner">
+        <div class="m-head">
+          <h2>为桌面而生</h2>
+          <p>从标题栏材质到快捷键，按照 Windows 的使用习惯设计。</p>
+        </div>
+        <div class="m-list">
+          <div class="m-row">
+            <span class="m-row-title">Mica / Acrylic 材质</span>
+            <span class="m-row-desc">窗口背景跟随桌面，深色与浅色主题自动适配。</span>
+          </div>
+          <div class="m-row">
+            <span class="m-row-title">原生标题栏与控件</span>
+            <span class="m-row-desc">窗口拖动、贴边分屏、输入法行为与系统应用一致。</span>
+          </div>
+          <div class="m-row">
+            <span class="m-row-title">多会话管理</span>
+            <span class="m-row-desc">左侧会话列表，搜索结果、工具调用与耗时一目了然。</span>
+          </div>
+          <div class="m-row">
+            <span class="m-row-title">自动更新</span>
+            <span class="m-row-desc">新版本发布后应用内提示，下载安装一步完成。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="m-download" id="download">
+      <div class="inner">
+        <h2>为未来而生，现已可用</h2>
+        <p>下载安装包，双击即可开始。支持 Windows 10 / 11（x64）。</p>
+        <div class="actions">
+          <a class="pill pill-solid" href="#" data-link="download">下载 Windows 版</a>
+          <a class="pill" href="#" data-link="releases" target="_blank" rel="noopener">GitHub Releases</a>
+        </div>
+        <p class="meta">
+          当前版本 <span data-version>v3.0</span> · <span data-file-size>约 528 MB</span> ·
+          需要 Windows 10 1809 或更高版本
+        </p>
       </div>
     </section>
   </main>
