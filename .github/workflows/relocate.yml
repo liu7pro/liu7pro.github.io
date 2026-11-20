@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "scripts/relocate.py"
+      - "scripts/redirect.html"
       - ".github/workflows/relocate.yml"
   workflow_dispatch:
 
