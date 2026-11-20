@@ -94,13 +94,17 @@ if os.path.exists(css_path) and new_css:
 
 js_path = 'assets/js/main.js'
 MUSIC_LINK = template('music-link.js')
-if os.path.exists(js_path) and MUSIC_LINK:
+if os.path.exists(js_path):
     js = read(js_path)
     marker = '// \u97f3\u4e50\u64ad\u653e\u5668'
     idx = js.find(marker)
     if idx > 0:
-        write(js_path, js[:idx].rstrip() + '\n\n' + MUSIC_LINK)
+        js = js[:idx].rstrip() + '\n\n' + MUSIC_LINK
+        write(js_path, js)
         print('main.js music link')
+    elif js.count('{') > js.count('}'):
+        write(js_path, js.rstrip() + '\n})();\n')
+        print('main.js closing fixed')
 
 cfg_path = 'assets/js/config.js'
 if os.path.exists(cfg_path):
