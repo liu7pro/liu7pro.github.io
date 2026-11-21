@@ -72,7 +72,8 @@
         <span class="nav-hover" aria-hidden="true"></span>
         <a href="#release">版本</a>
         <a href="#features">功能</a>
-        <a href="guide.html">使用指南</a>
+        <a href="#preview">界面</a>
+        <a href="guide.html">指南</a>
         <a href="download.html">下载</a>
         <a href="about.html">关于</a>
         <a class="nav-privacy" href="legal.html" aria-label="用户协议与隐私政策">
@@ -100,6 +101,19 @@
   <main>
     <section class="hero-m">
       <div class="inner">
+        <div class="hero-icon">
+          <span class="hero-ring" aria-hidden="true"></span>
+          <div class="hero-icon-inner">
+            <img src="assets/img/logo.png" alt="DomeOS AI 图标">
+          </div>
+        </div>
+
+        <div class="hero-badges">
+          <span>WinUI 3</span>
+          <span>.NET 9</span>
+          <span>Windows 10 / 11</span>
+        </div>
+
         <h1>DomeOS AI</h1>
         <p class="sub">为 Windows 打造的原生 AI 助手</p>
         <p class="desc">
@@ -168,6 +182,41 @@
           <div class="m-card">
             <h3>低占用常驻</h3>
             <p>关闭窗口后驻留托盘，全局快捷键随时唤起，多会话切换不丢上下文。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="m-section" id="preview">
+      <div class="inner">
+        <div class="m-head">
+          <h2>界面一览</h2>
+          <p>原生标题栏、Mica 材质与系统一致的交互。</p>
+        </div>
+        <div class="m-shot reveal">
+          <div class="shot-bar">
+            <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot-title">DomeOS AI</span>
+            <span class="shot-controls" aria-hidden="true"><i></i><i></i><i class="x"></i></span>
+          </div>
+          <div class="shot-body">
+            <aside class="shot-side">
+              <div class="shot-search">搜索会话</div>
+              <div class="shot-item active">整理周报与下周计划</div>
+              <div class="shot-item">解释这段 PowerShell</div>
+              <div class="shot-item">查找会议结论</div>
+            </aside>
+            <div class="shot-main">
+              <div class="shot-msg user">
+                <span class="shot-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 19.5c1.2-3.6 3.7-5.3 6.5-5.3s5.3 1.7 6.5 5.3"/></svg></span>
+                <p>帮我把这份周报整理成要点，再列一个下周计划。</p>
+              </div>
+              <div class="shot-msg">
+                <span class="shot-avatar"><img src="assets/img/logo.png" alt=""></span>
+                <p>已读取 <b>周报.docx</b>，共 3 个工作项。<br><b>本周要点</b><br>· 完成登录流程重构，异常率降至 0.4%<br>· 界面走查完成，遗留 3 个交互问题</p>
+              </div>
+              <div class="shot-composer">输入消息，或按全局快捷键唤起…</div>
+            </div>
           </div>
         </div>
       </div>
