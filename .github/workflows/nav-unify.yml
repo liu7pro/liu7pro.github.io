@@ -1,0 +1,39 @@
+name: Unify nav width
+
+on:
+  push:
+    paths:
+      - ".github/workflows/nav-unify.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Append width rules
+        run: |
+          if ! grep -q 'nav-unify' assets/css/nav.css; then
+            printf '%s\n' \
+              '' \
+              '/* nav-unify: same width for ZH and EN */' \
+              'body.home .nav,' \
+              'body:not(.home) .nav{width:min(calc(100% - 8px),920px);max-width:920px}' \
+              'body.home .nav-links,' \
+              'body:not(.home) .nav-links{flex:1;justify-content:center;margin-left:0;margin-right:0}' \
+              >> assets/css/nav.css
+          fi
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/css/nav.css
+          if ! git diff --cached --quiet; then
+            git commit -m "style: unify navigation width across languages"
+            git push origin HEAD:main
+          fi
