@@ -475,6 +475,7 @@
   dot.setAttribute('aria-hidden', 'true');
   document.body.appendChild(ring);
   document.body.appendChild(dot);
+  document.documentElement.classList.add('cursor-ready');
 
   var mx = -100, my = -100, rx = -100, ry = -100, shown = false, down = false;
   var hoverSel = 'a, button, .btn, [role="button"], [data-cursor-hover], .card, .member, .thanks-card, .product-card';
@@ -491,8 +492,8 @@
   }, { passive: true });
 
   (function loop() {
-    rx += (mx - rx) * 0.2;
-    ry += (my - ry) * 0.2;
+    rx += (mx - rx) * 0.3;
+    ry += (my - ry) * 0.3;
     ring.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0) scale(' + (down ? 0.86 : 1) + ')';
     window.requestAnimationFrame(loop);
   })();

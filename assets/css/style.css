@@ -2784,7 +2784,15 @@ body.modal-open {
   .cursor-ring, .cursor-dot { display: none; }
 }
 @media (hover: hover) and (pointer: fine) {
-  html, body, a, button, .btn, input, textarea, select, [role="button"] { cursor: none; }
+  html.cursor-ready,
+  html.cursor-ready body,
+  html.cursor-ready a,
+  html.cursor-ready button,
+  html.cursor-ready .btn,
+  html.cursor-ready input,
+  html.cursor-ready textarea,
+  html.cursor-ready select,
+  html.cursor-ready [role="button"] { cursor: none; }
 }
 .cursor-ring.is-hover{box-shadow:0 0 30px var(--cursor-glow)}
 
