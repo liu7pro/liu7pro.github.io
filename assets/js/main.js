@@ -137,7 +137,7 @@
   }
 
   function loadLatestRelease() {
-    var cacheKey = "domeos-release-json-v1";
+    var cacheKey = "domeos-release-json-v2";
     try {
       var cached = JSON.parse(sessionStorage.getItem(cacheKey));
       if (cached && cached.time && Date.now() - cached.time < 30 * 60 * 1000) {
