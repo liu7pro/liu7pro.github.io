@@ -1,0 +1,35 @@
+name: Patch homepage liquid styles
+
+on:
+  push:
+    paths:
+      - ".github/workflows/patch-liquid.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Link liquid.css on both homepages
+        run: |
+          if ! grep -q 'liquid.css' index.html; then
+            sed -i '0,/\/head>/s|</head>|  <link rel="stylesheet" href="assets/css/liquid.css">\n</head>|' index.html
+          fi
+          if ! grep -q 'liquid.css' en/index.html; then
+            sed -i '0,/\/head>/s|</head>|  <link rel="stylesheet" href="../assets/css/liquid.css">\n</head>|' en/index.html
+          fi
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html en/index.html
+          if ! git diff --cached --quiet; then
+            git commit -m "style: load liquid glass stylesheet on homepage"
+            git push origin HEAD:main
+          fi
