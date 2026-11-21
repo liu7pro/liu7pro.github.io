@@ -1,245 +1,87 @@
-body.home {
-  --bg: #0a0b0f;
-  --bg-soft: #0d0f14;
-  --surface: rgba(255, 255, 255, 0.04);
-  --surface-2: rgba(255, 255, 255, 0.07);
-  --border: rgba(255, 255, 255, 0.12);
-  --border-strong: rgba(255, 255, 255, 0.26);
-  --text: #e9ebf2;
-  --muted: #9ba1b0;
-  --faint: #6b7180;
-  --blue: #2e9df4;
-  --blue-dark: #1c86d8;
-  --blue-soft: rgba(46, 157, 244, 0.13);
-  background: var(--bg);
-}
+body.home{--bg:#0a0b0f;--bg-soft:#0d0f14;--surface:rgba(255,255,255,.04);--surface-2:rgba(255,255,255,.07);--border:rgba(255,255,255,.12);--border-strong:rgba(255,255,255,.26);--text:#e9ebf2;--muted:#9ba1b0;--faint:#6b7180;--blue:#2e9df4;--blue-dark:#1c86d8;--blue-soft:rgba(46,157,244,.13);background:var(--bg)}
+html[data-theme="light"] body.home{--bg:#f7f8fa;--bg-soft:#fff;--surface:rgba(255,255,255,.72);--surface-2:rgba(16,20,38,.05);--border:rgba(16,20,38,.12);--border-strong:rgba(16,20,38,.26);--text:#14161f;--muted:#5d6274;--faint:#8a8fa0;--blue:#1c86d8;--blue-soft:rgba(46,157,244,.1);background:var(--bg)}
 
-html[data-theme="light"] body.home {
-  --bg: #f7f8fa;
-  --bg-soft: #ffffff;
-  --surface: rgba(255, 255, 255, 0.72);
-  --surface-2: rgba(16, 20, 38, 0.05);
-  --border: rgba(16, 20, 38, 0.12);
-  --border-strong: rgba(16, 20, 38, 0.26);
-  --text: #14161f;
-  --muted: #5d6274;
-  --faint: #8a8fa0;
-  --blue: #1c86d8;
-  --blue-soft: rgba(46, 157, 244, 0.1);
-  background: var(--bg);
-}
+body.home .bg-scene{display:block;opacity:1}
+body.home .bg-scene .orb{opacity:.5;filter:blur(72px)}
+body.home .cursor-glow{display:block;opacity:1}
+html[data-theme="light"] body.home .bg-scene{opacity:.85}
+html[data-theme="light"] body.home .bg-scene .orb{opacity:.28}
 
-body.home .bg-scene { display: block; opacity: 1; }
-
-body.home .bg-scene .orb { opacity: 0.5; filter: blur(72px); }
-
-body.home .cursor-glow { display: block; opacity: 1; }
-
-html[data-theme="light"] body.home .bg-scene { opacity: 0.85; }
-
-html[data-theme="light"] body.home .bg-scene .orb { opacity: 0.28; }
-
-body.home .nav {
-  background-color: rgba(14, 16, 24, 0.5);
-  background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02) 48%, rgba(255, 255, 255, 0.06));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(22px) saturate(170%);
-  -webkit-backdrop-filter: blur(22px) saturate(170%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
-}
-
-html[data-theme="light"] body.home .nav {
-  background-color: rgba(255, 255, 255, 0.6);
-  background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.24) 50%, rgba(255, 255, 255, 0.4));
-  border-bottom-color: rgba(16, 20, 38, 0.1);
-}
-
-body.home .site-header.scrolled .nav { background-color: rgba(10, 12, 18, 0.78); }
-
-html[data-theme="light"] body.home .site-header.scrolled .nav { background-color: rgba(255, 255, 255, 0.82); }
+body.home .nav{background-color:rgba(14,16,24,.5);background-image:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.02) 48%,rgba(255,255,255,.06));border-bottom:1px solid rgba(255,255,255,.14);backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.16)}
+html[data-theme="light"] body.home .nav{background-color:rgba(255,255,255,.6);background-image:linear-gradient(145deg,rgba(255,255,255,.7),rgba(255,255,255,.24) 50%,rgba(255,255,255,.4));border-bottom-color:rgba(16,20,38,.1)}
+body.home .site-header.scrolled .nav{background-color:rgba(10,12,18,.78)}
+html[data-theme="light"] body.home .site-header.scrolled .nav{background-color:rgba(255,255,255,.82)}
 
 body.home .m-card,
 body.home .m-release-card,
-body.home .m-shot {
-  position: relative;
-  isolation: isolate;
-  background-image: linear-gradient(150deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02) 42%, rgba(255, 255, 255, 0.06));
-  background-color: rgba(16, 18, 26, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(22px) saturate(170%);
-  -webkit-backdrop-filter: blur(22px) saturate(170%);
-  box-shadow: 0 24px 60px -34px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s;
-}
-
+body.home .m-shot{position:relative;isolation:isolate;background-image:linear-gradient(150deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 42%,rgba(255,255,255,.06));background-color:rgba(16,18,26,.42);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);box-shadow:0 24px 60px -34px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.14);transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s cubic-bezier(.22,1,.36,1),border-color .3s}
 html[data-theme="light"] body.home .m-card,
 html[data-theme="light"] body.home .m-release-card,
-html[data-theme="light"] body.home .m-shot {
-  background-color: rgba(255, 255, 255, 0.7);
-  background-image: linear-gradient(150deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.7));
-  border-color: rgba(16, 20, 38, 0.1);
-  box-shadow: 0 24px 55px -34px rgba(22, 28, 62, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-}
+html[data-theme="light"] body.home .m-shot{background-color:rgba(255,255,255,.7);background-image:linear-gradient(150deg,rgba(255,255,255,.85),rgba(255,255,255,.5) 50%,rgba(255,255,255,.7));border-color:rgba(16,20,38,.1);box-shadow:0 24px 55px -34px rgba(22,28,62,.35),inset 0 1px 0 rgba(255,255,255,.95)}
 
 body.home .m-card::before,
 body.home .m-release-card::before,
-body.home .m-shot::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.04) 34%, rgba(255, 255, 255, 0.22) 64%, rgba(255, 255, 255, 0.04));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
+body.home .m-shot::before{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.5),rgba(255,255,255,.04) 34%,rgba(255,255,255,.22) 64%,rgba(255,255,255,.04));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;pointer-events:none}
 html[data-theme="light"] body.home .m-card::before,
 html[data-theme="light"] body.home .m-release-card::before,
-html[data-theme="light"] body.home .m-shot::before {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.3) 36%, rgba(16, 20, 38, 0.14) 66%, rgba(255, 255, 255, 0.75));
-}
+html[data-theme="light"] body.home .m-shot::before{background:linear-gradient(135deg,rgba(255,255,255,.98),rgba(255,255,255,.3) 36%,rgba(16,20,38,.14) 66%,rgba(255,255,255,.75))}
 
 body.home .m-card::after,
 body.home .m-release-card::after,
-body.home .m-shot::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(115deg, transparent 24%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0.02) 50%, transparent 64%);
-  background-size: 240% 100%;
-  background-position: 130% 0;
-  opacity: 0.75;
-  transition: background-position 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s;
-}
-
+body.home .m-shot::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 24%,rgba(255,255,255,.1) 40%,rgba(255,255,255,.02) 50%,transparent 64%);background-size:240% 100%;background-position:130% 0;opacity:.75;transition:background-position .9s cubic-bezier(.22,1,.36,1),opacity .4s}
 body.home .m-card:hover::after,
 body.home .m-release-card:hover::after,
-body.home .m-shot:hover::after {
-  background-position: -30% 0;
-  opacity: 1;
-}
+body.home .m-shot:hover::after{background-position:-30% 0;opacity:1}
 
-body.home .m-card:hover {
-  transform: translateY(-7px);
-  border-color: rgba(255, 255, 255, 0.24);
-  box-shadow: 0 32px 64px -26px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.04);
-}
+body.home .m-card:hover{transform:translateY(-7px);border-color:rgba(255,255,255,.24);box-shadow:0 32px 64px -26px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.2),0 0 0 1px rgba(255,255,255,.04)}
+html[data-theme="light"] body.home .m-card:hover{border-color:rgba(16,20,38,.2);box-shadow:0 32px 64px -30px rgba(22,28,62,.42),inset 0 1px 0 rgba(255,255,255,.98)}
 
-html[data-theme="light"] body.home .m-card:hover {
-  border-color: rgba(16, 20, 38, 0.2);
-  box-shadow: 0 32px 64px -30px rgba(22, 28, 62, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.98);
-}
+body.home .pill{background:rgba(255,255,255,.055);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+body.home .pill:hover{background:rgba(255,255,255,.1)}
+body.home .pill-solid{background:linear-gradient(180deg,#fff,#d8dde8);border-color:transparent;color:#0a0b0f;box-shadow:0 16px 34px -18px rgba(255,255,255,.45),inset 0 1px 0 #fff}
+body.home .pill-solid:hover{background:linear-gradient(180deg,#fff,#fff);color:#0a0b0f;box-shadow:0 20px 40px -18px rgba(255,255,255,.6),inset 0 1px 0 #fff}
+html[data-theme="light"] body.home .pill{background:rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+html[data-theme="light"] body.home .pill-solid{background:linear-gradient(180deg,#16171d,#0a0b0f);color:#fff;box-shadow:0 16px 34px -18px rgba(20,24,40,.5),inset 0 1px 0 rgba(255,255,255,.16)}
+html[data-theme="light"] body.home .pill-solid:hover{background:#0a0b0f;color:#fff}
 
-body.home .pill {
-  background: rgba(255, 255, 255, 0.055);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
-}
-
-body.home .pill:hover { background: rgba(255, 255, 255, 0.1); }
-
-body.home .pill-solid {
-  background: linear-gradient(180deg, #ffffff, #d8dde8);
-  border-color: transparent;
-  color: #0a0b0f;
-  box-shadow: 0 16px 34px -18px rgba(255, 255, 255, 0.45), inset 0 1px 0 #ffffff;
-}
-
-body.home .pill-solid:hover {
-  background: linear-gradient(180deg, #ffffff, #ffffff);
-  color: #0a0b0f;
-  box-shadow: 0 20px 40px -18px rgba(255, 255, 255, 0.6), inset 0 1px 0 #ffffff;
-}
-
-html[data-theme="light"] body.home .pill {
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-html[data-theme="light"] body.home .pill-solid {
-  background: linear-gradient(180deg, #16171d, #0a0b0f);
-  color: #ffffff;
-  box-shadow: 0 16px 34px -18px rgba(20, 24, 40, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.16);
-}
-
-html[data-theme="light"] body.home .pill-solid:hover { background: #0a0b0f; color: #ffffff; }
-
-body.home .hero-badges span {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-html[data-theme="light"] body.home .hero-badges span {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(16, 20, 38, 0.1);
-}
-
+body.home .hero-badges span{background:rgba(255,255,255,.05);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-color:rgba(255,255,255,.14)}
+html[data-theme="light"] body.home .hero-badges span{background:rgba(255,255,255,.7);border-color:rgba(16,20,38,.1)}
 body.home .nav-links a:hover,
 body.home .theme-toggle:hover,
-body.home .lang-switch:hover {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
+body.home .lang-switch:hover{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 html[data-theme="light"] body.home .nav-links a:hover,
 html[data-theme="light"] body.home .theme-toggle:hover,
-html[data-theme="light"] body.home .lang-switch:hover {
-  background: rgba(16, 20, 38, 0.06);
+html[data-theme="light"] body.home .lang-switch:hover{background:rgba(16,20,38,.06)}
+
+body.home .shot-bar{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html[data-theme="light"] body.home .shot-bar{background:rgba(255,255,255,.5)}
+body.home .shot-composer{background:rgba(255,255,255,.04);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html[data-theme="light"] body.home .shot-composer{background:rgba(255,255,255,.6)}
+
+body.home .m-notes{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.02);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+html[data-theme="light"] body.home .m-notes{background:rgba(255,255,255,.5);border-color:rgba(16,20,38,.1)}
+
+body.home .site-footer{background:rgba(10,12,18,.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+html[data-theme="light"] body.home .site-footer{background:rgba(255,255,255,.55)}
+
+@keyframes cardRise{from{opacity:0;translate:0 30px}to{opacity:1;translate:0 0}}
+@supports (animation-timeline: view()){
+  body.home .m-grid .m-card{animation:cardRise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+  body.home .m-grid .m-card:nth-child(2){animation-range:entry 5% entry 60%}
+  body.home .m-grid .m-card:nth-child(3){animation-range:entry 10% entry 65%}
+  body.home .m-grid .m-card:nth-child(4){animation-range:entry 15% entry 70%}
+  body.home .m-release-card,
+  body.home .m-notes{animation:cardRise linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+  body.home .m-notes{animation-range:entry 6% entry 56%}
 }
 
-body.home .shot-bar {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-html[data-theme="light"] body.home .shot-bar { background: rgba(255, 255, 255, 0.5); }
-
-body.home .shot-composer {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-html[data-theme="light"] body.home .shot-composer { background: rgba(255, 255, 255, 0.6); }
-
-body.home .m-notes {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-html[data-theme="light"] body.home .m-notes {
-  background: rgba(255, 255, 255, 0.5);
-  border-color: rgba(16, 20, 38, 0.1);
-}
-
-body.home .site-footer {
-  background: rgba(10, 12, 18, 0.4);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-html[data-theme="light"] body.home .site-footer { background: rgba(255, 255, 255, 0.55); }
-
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion:reduce){
   body.home .m-card,
   body.home .m-card::after,
   body.home .m-release-card::after,
-  body.home .m-shot::after { transition: none; }
-
-  body.home .m-card:hover { transform: none; }
+  body.home .m-shot::after{transition:none}
+  body.home .m-card:hover{transform:none}
+  body.home .m-grid .m-card,
+  body.home .m-release-card,
+  body.home .m-notes{animation:none}
 }
