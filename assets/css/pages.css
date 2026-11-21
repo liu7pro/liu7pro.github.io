@@ -1,0 +1,68 @@
+body:not(.home) .site-header{height:72px;padding:0;animation:none}
+body:not(.home) .nav{width:100%;max-width:1180px;height:72px;padding:0 24px;gap:14px;border-radius:0;background-color:rgba(14,16,24,.5);background-image:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.02) 48%,rgba(255,255,255,.06));border:0;border-bottom:1px solid rgba(255,255,255,.14);backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.16);transform:none!important}
+html[data-theme="light"] body:not(.home) .nav{background-color:rgba(255,255,255,.6);background-image:linear-gradient(145deg,rgba(255,255,255,.7),rgba(255,255,255,.24) 50%,rgba(255,255,255,.4));border-bottom-color:rgba(16,20,38,.1)}
+body:not(.home) .site-header.scrolled .nav{background-color:rgba(10,12,18,.78)}
+html[data-theme="light"] body:not(.home) .site-header.scrolled .nav{background-color:rgba(255,255,255,.82)}
+body:not(.home) .nav::before,
+body:not(.home) .nav::after{display:none}
+body:not(.home) .nav-divider{display:none}
+body:not(.home) .nav-links{margin-left:auto;gap:2px}
+body:not(.home) .nav-links a{padding:6px 12px;font-size:13px;border-radius:999px}
+body:not(.home) .nav-links a:hover{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html[data-theme="light"] body:not(.home) .nav-links a:hover{background:rgba(16,20,38,.06)}
+body:not(.home) .nav-hover{display:none}
+
+body:not(.home) .page-hero{padding-top:calc(72px + 92px);padding-bottom:52px}
+body:not(.home) .page-hero h1{margin:0;font-size:clamp(38px,6.4vw,68px);font-weight:500;letter-spacing:-.045em;line-height:1.06}
+body:not(.home) .page-hero p{max-width:640px;margin:16px auto 0;font-size:15px;line-height:1.8;color:var(--faint)}
+
+body:not(.home) .docs-card,
+body:not(.home) .dl-card,
+body:not(.home) .about-card,
+body:not(.home) .docs-nav{background-image:linear-gradient(150deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 42%,rgba(255,255,255,.06));background-color:rgba(16,18,26,.42);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);box-shadow:0 24px 60px -34px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.14);border-radius:20px}
+html[data-theme="light"] body:not(.home) .docs-card,
+html[data-theme="light"] body:not(.home) .dl-card,
+html[data-theme="light"] body:not(.home) .about-card,
+html[data-theme="light"] body:not(.home) .docs-nav{background-color:rgba(255,255,255,.7);background-image:linear-gradient(150deg,rgba(255,255,255,.85),rgba(255,255,255,.5) 50%,rgba(255,255,255,.7));border-color:rgba(16,20,38,.1);box-shadow:0 24px 55px -34px rgba(22,28,62,.35),inset 0 1px 0 rgba(255,255,255,.95)}
+body:not(.home) .docs-card,
+body:not(.home) .dl-card,
+body:not(.home) .about-card{position:relative;isolation:isolate}
+body:not(.home) .docs-card::before,
+body:not(.home) .dl-card::before,
+body:not(.home) .about-card::before,
+body:not(.home) .docs-nav::before{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.5),rgba(255,255,255,.04) 34%,rgba(255,255,255,.22) 64%,rgba(255,255,255,.04));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;pointer-events:none}
+html[data-theme="light"] body:not(.home) .docs-card::before,
+html[data-theme="light"] body:not(.home) .dl-card::before,
+html[data-theme="light"] body:not(.home) .about-card::before,
+html[data-theme="light"] body:not(.home) .docs-nav::before{background:linear-gradient(135deg,rgba(255,255,255,.98),rgba(255,255,255,.3) 36%,rgba(16,20,38,.14) 66%,rgba(255,255,255,.75))}
+
+body:not(.home) .docs-nav{padding:18px 14px}
+body:not(.home) .docs-nav a{border-radius:999px}
+body:not(.home) .docs-nav a.active,
+body:not(.home) .docs-nav a:hover{background:rgba(255,255,255,.08)}
+html[data-theme="light"] body:not(.home) .docs-nav a.active,
+html[data-theme="light"] body:not(.home) .docs-nav a:hover{background:rgba(16,20,38,.06)}
+
+body:not(.home) .btn{border-radius:999px}
+body:not(.home) .btn-primary{background:linear-gradient(180deg,#fff,#d8dde8);border-color:transparent;color:#0a0b0f;box-shadow:0 16px 34px -18px rgba(255,255,255,.45),inset 0 1px 0 #fff}
+body:not(.home) .btn-primary:hover{background:#fff;color:#0a0b0f;transform:translateY(-1px)}
+body:not(.home) .btn-ghost{background:rgba(255,255,255,.055);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+html[data-theme="light"] body:not(.home) .btn-primary{background:linear-gradient(180deg,#16171d,#0a0b0f);color:#fff;box-shadow:0 16px 34px -18px rgba(20,24,40,.5),inset 0 1px 0 rgba(255,255,255,.16)}
+html[data-theme="light"] body:not(.home) .btn-primary:hover{background:#0a0b0f;color:#fff}
+html[data-theme="light"] body:not(.home) .btn-ghost{background:rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+
+body:not(.home) .thanks-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.14);transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .25s,background .25s}
+body:not(.home) .thanks-item:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.08)}
+html[data-theme="light"] body:not(.home) .thanks-item{background:rgba(255,255,255,.7);border-color:rgba(16,20,38,.1)}
+html[data-theme="light"] body:not(.home) .thanks-item:hover{background:rgba(255,255,255,.95);border-color:rgba(16,20,38,.2)}
+
+body:not(.home) .site-footer{background:rgba(10,12,18,.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.1)}
+html[data-theme="light"] body:not(.home) .site-footer{background:rgba(255,255,255,.55);border-top-color:rgba(16,20,38,.1)}
+
+body:not(.home) .not-found .code{font-size:clamp(120px,22vw,200px);font-weight:400;letter-spacing:-.06em;line-height:1}
+body:not(.home) .not-found h1{font-size:clamp(24px,3.4vw,36px);font-weight:500;letter-spacing:-.03em}
+
+@media (max-width:720px){
+  body:not(.home) .nav{padding:0 16px}
+  body:not(.home) .docs-nav{position:static}
+}
