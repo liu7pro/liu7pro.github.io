@@ -40,3 +40,9 @@ html[data-theme="light"] body:not(.home) .site-header.scrolled .nav{background-c
   body.home .nav-links,
   body:not(.home) .nav-links{margin:0}
 }
+
+/* nav-unify: same width for ZH and EN */
+body.home .nav,
+body:not(.home) .nav{width:min(calc(100% - 8px),920px);max-width:920px}
+body.home .nav-links,
+body:not(.home) .nav-links{flex:1;justify-content:center;margin-left:0;margin-right:0}
