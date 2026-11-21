@@ -1,0 +1,29 @@
+name: Apply Microsoft footer
+
+on:
+  push:
+    paths:
+      - ".github/workflows/footer.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rewrite footers
+        run: python3 scripts/apply-footer.py
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "style: Microsoft-style footer with friend links"
+            git push origin HEAD:main
+          fi
