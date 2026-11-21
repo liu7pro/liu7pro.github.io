@@ -460,3 +460,54 @@
   })();
 
 })();
+
+
+/* ---------- 自定义光标（参考 Moonshot） ---------- */
+(function () {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var ring = document.createElement('div');
+  ring.className = 'cursor-ring';
+  ring.setAttribute('aria-hidden', 'true');
+  var dot = document.createElement('div');
+  dot.className = 'cursor-dot';
+  dot.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(ring);
+  document.body.appendChild(dot);
+
+  var mx = -100, my = -100, rx = -100, ry = -100, shown = false;
+  var hoverSel = 'a, button, .btn, [role="button"], [data-cursor-hover], .card, .member, .thanks-card, .product-card';
+
+  document.addEventListener('mousemove', function (e) {
+    mx = e.clientX;
+    my = e.clientY;
+    if (!shown) {
+      shown = true;
+      ring.style.opacity = '1';
+      dot.style.opacity = '1';
+    }
+    dot.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0)';
+  }, { passive: true });
+
+  (function loop() {
+    rx += (mx - rx) * 0.2;
+    ry += (my - ry) * 0.2;
+    ring.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0)';
+    window.requestAnimationFrame(loop);
+  })();
+
+  document.addEventListener('mouseover', function (e) {
+    if (e.target.closest && e.target.closest(hoverSel)) ring.classList.add('is-hover');
+  });
+  document.addEventListener('mouseout', function (e) {
+    if (e.target.closest && e.target.closest(hoverSel)) ring.classList.remove('is-hover');
+  });
+  document.addEventListener('mousedown', function () { ring.classList.add('is-down'); });
+  document.addEventListener('mouseup', function () { ring.classList.remove('is-down'); });
+  document.addEventListener('mouseleave', function () {
+    ring.style.opacity = '0';
+    dot.style.opacity = '0';
+    shown = false;
+  });
+})();
